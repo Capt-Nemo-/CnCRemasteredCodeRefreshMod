@@ -11,6 +11,9 @@
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{7bd10c3e-67f3-4051-a861-06db6191bb48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DotNetApi">
+      <UniqueIdentifier>{e85a0ab2-34d8-48fe-b6eb-fa0e7304e98a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="COORDA.ASM">
@@ -627,6 +630,9 @@
     <ClInclude Include="RULES.H">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="DotNetApiVc.h">
+      <Filter>DotNetApi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AADATA.CPP">
@@ -1205,6 +1211,9 @@
     <ClCompile Include="DLLInterfaceEditor.cpp" />
     <ClCompile Include="RULES.CPP">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DotNetApiVc.cpp">
+      <Filter>DotNetApi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

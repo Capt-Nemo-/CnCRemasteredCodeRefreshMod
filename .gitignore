@@ -11,3 +11,9 @@
 /REDALERT/Win32
 /REDALERT/RedAlert.vcxproj.user
 /bin/Release
+DotNetApi/.vs/DotNetApi/v16/
+DotNetApi/Release/
+DotNetApi/Debug/
+DotNetApi/DotNetApi.vcxproj.user
+DotNetApi/bin/
+DotNetApi/obj/

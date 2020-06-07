@@ -70,6 +70,7 @@
 #include	<share.h>
 #include <malloc.h>
 #include  "ccdde.h"
+#include "DotNetApiVc.h"
 
 #define SHAPE_TRANS		0x40
 
@@ -134,6 +135,8 @@ extern bool Spawn_WChat(bool can_launch);
 extern bool SpawnedFromWChat;
 void Main_Game(int argc, char *argv[])
 {
+    DotNetApiVc::MainInit(argc, argv);
+		
 	bool fade = false;	// don't fade title screen the first time through
 
 	/*

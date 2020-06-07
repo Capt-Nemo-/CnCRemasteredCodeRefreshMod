@@ -15,6 +15,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccProvider>SAK</SccProvider>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -23,6 +24,7 @@
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -34,7 +36,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\$(Configuration)\</OutDir>
+    <OutDir>C:\Steam\steamapps\common\CnCRemastered</OutDir>
     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -49,7 +51,7 @@
       <AdditionalIncludeDirectories>./win32lib</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4800;4244;4996</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
@@ -153,6 +155,7 @@
     <ClInclude Include="DISPLAY.H" />
     <ClInclude Include="DLLInterface.h" />
     <ClInclude Include="DOOR.H" />
+    <ClInclude Include="DotNetApiVc.h" />
     <ClInclude Include="DPMI.H" />
     <ClInclude Include="DRIVE.H" />
     <ClInclude Include="EDIT.H" />
@@ -305,204 +308,595 @@
     <ClInclude Include="WWFILE.H" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AADATA.CPP" />
-    <ClCompile Include="ABSTRACT.CPP" />
-    <ClCompile Include="ADATA.CPP" />
-    <ClCompile Include="AIRCRAFT.CPP" />
+    <ClCompile Include="AADATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="ABSTRACT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="ADATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="AIRCRAFT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
     <ClCompile Include="ALLOC.CPP">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="ANIM.CPP" />
-    <ClCompile Include="AUDIO.CPP" />
-    <ClCompile Include="BASE.CPP" />
-    <ClCompile Include="BBDATA.CPP" />
-    <ClCompile Include="BDATA.CPP" />
-    <ClCompile Include="BUILDING.CPP" />
-    <ClCompile Include="BULLET.CPP" />
-    <ClCompile Include="CARGO.CPP" />
-    <ClCompile Include="CCDDE.CPP" />
-    <ClCompile Include="CCFILE.CPP" />
-    <ClCompile Include="CDATA.CPP" />
-    <ClCompile Include="CDFILE.CPP" />
-    <ClCompile Include="CELL.CPP" />
-    <ClCompile Include="CHECKBOX.CPP" />
-    <ClCompile Include="CHEKLIST.CPP" />
-    <ClCompile Include="COLRLIST.CPP" />
-    <ClCompile Include="COMBAT.CPP" />
-    <ClCompile Include="COMBUF.CPP" />
-    <ClCompile Include="COMQUEUE.CPP" />
-    <ClCompile Include="CONFDLG.CPP" />
-    <ClCompile Include="CONNECT.CPP" />
-    <ClCompile Include="CONQUER.CPP" />
-    <ClCompile Include="CONST.CPP" />
-    <ClCompile Include="CONTROL.CPP" />
-    <ClCompile Include="COORD.CPP" />
-    <ClCompile Include="CREDITS.CPP" />
-    <ClCompile Include="CREW.CPP" />
-    <ClCompile Include="DDE.CPP" />
-    <ClCompile Include="DEBUG.CPP" />
-    <ClCompile Include="DESCDLG.CPP" />
-    <ClCompile Include="DIAL8.CPP" />
-    <ClCompile Include="DIALOG.CPP" />
-    <ClCompile Include="DISPLAY.CPP" />
-    <ClCompile Include="DLLInterface.cpp" />
-    <ClCompile Include="DLLInterfaceEditor.cpp" />
-    <ClCompile Include="DOOR.CPP" />
-    <ClCompile Include="DPMI.CPP" />
-    <ClCompile Include="DRIVE.CPP" />
-    <ClCompile Include="EDIT.CPP" />
-    <ClCompile Include="ENDING.CPP" />
-    <ClCompile Include="EVENT.CPP" />
-    <ClCompile Include="EXPAND.CPP" />
-    <ClCompile Include="FACING.CPP" />
-    <ClCompile Include="FACTORY.CPP" />
-    <ClCompile Include="FIELD.CPP" />
-    <ClCompile Include="FINDPATH.CPP" />
-    <ClCompile Include="FLASHER.CPP" />
-    <ClCompile Include="FLY.CPP" />
-    <ClCompile Include="FOOT.CPP" />
-    <ClCompile Include="FUSE.CPP" />
-    <ClCompile Include="GADGET.CPP" />
-    <ClCompile Include="GAMEDLG.CPP" />
-    <ClCompile Include="GAUGE.CPP" />
-    <ClCompile Include="GLOBALS.CPP" />
-    <ClCompile Include="GOPTIONS.CPP" />
-    <ClCompile Include="GSCREEN.CPP" />
-    <ClCompile Include="HDATA.CPP" />
-    <ClCompile Include="HEAP.CPP" />
-    <ClCompile Include="HELP.CPP" />
-    <ClCompile Include="HOUSE.CPP" />
-    <ClCompile Include="IDATA.CPP" />
-    <ClCompile Include="INFANTRY.CPP" />
-    <ClCompile Include="INI.CPP" />
-    <ClCompile Include="INIT.CPP" />
-    <ClCompile Include="INTERNET.CPP" />
-    <ClCompile Include="INTERPAL.CPP" />
-    <ClCompile Include="INTRO.CPP" />
-    <ClCompile Include="IOMAP.CPP" />
-    <ClCompile Include="IOOBJ.CPP" />
-    <ClCompile Include="IPX.CPP" />
-    <ClCompile Include="IPX95.CPP" />
-    <ClCompile Include="IPXADDR.CPP" />
-    <ClCompile Include="IPXCONN.CPP" />
-    <ClCompile Include="IPXGCONN.CPP" />
-    <ClCompile Include="IPXMGR.CPP" />
-    <ClCompile Include="JSHELL.CPP" />
-    <ClCompile Include="KEYFRAME.CPP" />
-    <ClCompile Include="LAYER.CPP" />
-    <ClCompile Include="LINK.CPP" />
-    <ClCompile Include="LIST.CPP" />
-    <ClCompile Include="LOADDLG.CPP" />
-    <ClCompile Include="LOGIC.CPP" />
-    <ClCompile Include="MAP.CPP" />
-    <ClCompile Include="MAPEDDLG.CPP" />
-    <ClCompile Include="MAPEDIT.CPP" />
-    <ClCompile Include="MAPEDPLC.CPP" />
-    <ClCompile Include="MAPEDSEL.CPP" />
-    <ClCompile Include="MAPEDTM.CPP" />
-    <ClCompile Include="MAPSEL.CPP" />
-    <ClCompile Include="MENUS.CPP" />
-    <ClCompile Include="MiscAsm.cpp" />
-    <ClCompile Include="MISSION.CPP" />
-    <ClCompile Include="MIXFILE.CPP" />
-    <ClCompile Include="MONOC.CPP" />
-    <ClCompile Include="MOUSE.CPP" />
-    <ClCompile Include="MPLAYER.CPP" />
-    <ClCompile Include="MSGBOX.CPP" />
-    <ClCompile Include="MSGLIST.CPP" />
-    <ClCompile Include="NETDLG.CPP" />
-    <ClCompile Include="NOSEQCON.CPP" />
-    <ClCompile Include="NULLCONN.CPP" />
-    <ClCompile Include="NULLDLG.CPP" />
-    <ClCompile Include="NULLMGR.CPP" />
-    <ClCompile Include="OBJECT.CPP" />
-    <ClCompile Include="ODATA.CPP" />
-    <ClCompile Include="OPTIONS.CPP" />
-    <ClCompile Include="OVERLAY.CPP" />
-    <ClCompile Include="PACKET.CPP" />
-    <ClCompile Include="POWER.CPP" />
-    <ClCompile Include="PROFILE.CPP" />
-    <ClCompile Include="QUEUE.CPP" />
-    <ClCompile Include="RADAR.CPP" />
-    <ClCompile Include="RADIO.CPP" />
-    <ClCompile Include="RAND.CPP" />
-    <ClCompile Include="RAWFILE.CPP" />
-    <ClCompile Include="REINF.CPP" />
-    <ClCompile Include="RULES.CPP" />
-    <ClCompile Include="SAVELOAD.CPP" />
-    <ClCompile Include="SCENARIO.CPP" />
-    <ClCompile Include="SCORE.CPP" />
-    <ClCompile Include="SCROLL.CPP" />
-    <ClCompile Include="SDATA.CPP" />
-    <ClCompile Include="SEQCONN.CPP" />
-    <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="SHAPEBTN.CPP" />
-    <ClCompile Include="SIDEBAR.CPP" />
-    <ClCompile Include="SIDEBARGlyphx.CPP" />
-    <ClCompile Include="SLIDER.CPP" />
-    <ClCompile Include="SMUDGE.CPP" />
-    <ClCompile Include="SOUNDDLG.CPP" />
-    <ClCompile Include="SPECIAL.CPP" />
-    <ClCompile Include="STARTUP.CPP" />
-    <ClCompile Include="STATS.CPP" />
-    <ClCompile Include="SUPER.CPP" />
-    <ClCompile Include="TAB.CPP" />
-    <ClCompile Include="TARCOM.CPP" />
-    <ClCompile Include="TARGET.CPP" />
-    <ClCompile Include="TCPIP.CPP" />
-    <ClCompile Include="TDATA.CPP" />
-    <ClCompile Include="TEAM.CPP" />
-    <ClCompile Include="TEAMTYPE.CPP" />
-    <ClCompile Include="TECHNO.CPP" />
-    <ClCompile Include="TEMPLATE.CPP" />
-    <ClCompile Include="TERRAIN.CPP" />
-    <ClCompile Include="TEXTBTN.CPP" />
-    <ClCompile Include="THEME.CPP" />
-    <ClCompile Include="TOGGLE.CPP" />
-    <ClCompile Include="TRIGGER.CPP" />
-    <ClCompile Include="TURRET.CPP" />
-    <ClCompile Include="TXTLABEL.CPP" />
-    <ClCompile Include="UDATA.CPP" />
-    <ClCompile Include="UNIT.CPP" />
-    <ClCompile Include="UTRACKER.CPP" />
-    <ClCompile Include="VECTOR.CPP" />
-    <ClCompile Include="VISUDLG.CPP" />
-    <ClCompile Include="win32lib\ALLOC.CPP" />
-    <ClCompile Include="win32lib\BUFFER.CPP" />
-    <ClCompile Include="win32lib\BUFFGLBL.CPP" />
-    <ClCompile Include="win32lib\DDRAW.CPP" />
-    <ClCompile Include="win32lib\DIPTHONG.CPP" />
-    <ClCompile Include="win32lib\DrawMisc.cpp" />
-    <ClCompile Include="win32lib\DRAWRECT.CPP" />
-    <ClCompile Include="win32lib\FONT.CPP" />
-    <ClCompile Include="win32lib\GBUFFER.CPP" />
-    <ClCompile Include="win32lib\GETSHAPE.CPP" />
-    <ClCompile Include="win32lib\ICONSET.CPP" />
-    <ClCompile Include="win32lib\IFF.CPP" />
-    <ClCompile Include="win32lib\IRANDOM.CPP" />
-    <ClCompile Include="win32lib\KEYBOARD.CPP" />
-    <ClCompile Include="win32lib\LOAD.CPP" />
-    <ClCompile Include="win32lib\LOADFONT.CPP" />
-    <ClCompile Include="win32lib\LOADPAL.CPP" />
-    <ClCompile Include="win32lib\MEM.CPP" />
-    <ClCompile Include="win32lib\MORPHPAL.CPP" />
-    <ClCompile Include="win32lib\MOUSEWW.CPP" />
-    <ClCompile Include="win32lib\NEWDEL.CPP" />
-    <ClCompile Include="win32lib\PALETTE.CPP" />
-    <ClCompile Include="win32lib\REGIONSZ.CPP" />
-    <ClCompile Include="win32lib\SET_FONT.CPP" />
-    <ClCompile Include="win32lib\TIMER.CPP" />
-    <ClCompile Include="win32lib\TIMERDWN.CPP" />
-    <ClCompile Include="win32lib\TIMERINI.CPP" />
-    <ClCompile Include="win32lib\WINDOWS.CPP" />
-    <ClCompile Include="win32lib\WINHIDE.CPP" />
-    <ClCompile Include="win32lib\WRITEPCX.CPP" />
-    <ClCompile Include="win32lib\WSA.CPP" />
-    <ClCompile Include="win32lib\_DIPTABL.CPP" />
-    <ClCompile Include="WINSTUB.CPP" />
+    <ClCompile Include="ANIM.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="AUDIO.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="BASE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="BBDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="BDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="BUILDING.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="BULLET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CARGO.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CCDDE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CCFILE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CDFILE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CELL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CHECKBOX.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CHEKLIST.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="COLRLIST.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="COMBAT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="COMBUF.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="COMQUEUE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CONFDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CONNECT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CONQUER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CONST.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CONTROL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="COORD.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CREDITS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="CREW.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DDE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DEBUG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DESCDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DIAL8.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DIALOG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DISPLAY.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DLLInterface.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DLLInterfaceEditor.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DOOR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DotNetApiVc.cpp" />
+    <ClCompile Include="DPMI.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="DRIVE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="EDIT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="ENDING.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="EVENT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="EXPAND.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FACING.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FACTORY.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FIELD.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FINDPATH.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FLASHER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FLY.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FOOT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="FUSE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="GADGET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="GAMEDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="GAUGE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="GLOBALS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="GOPTIONS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="GSCREEN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="HDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="HEAP.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="HELP.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="HOUSE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="INFANTRY.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="INI.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="INIT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="INTERNET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="INTERPAL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="INTRO.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IOMAP.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IOOBJ.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IPX.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IPX95.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IPXADDR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IPXCONN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IPXGCONN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="IPXMGR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="JSHELL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="KEYFRAME.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="LAYER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="LINK.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="LIST.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="LOADDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="LOGIC.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAP.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAPEDDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAPEDIT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAPEDPLC.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAPEDSEL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAPEDTM.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MAPSEL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MENUS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MiscAsm.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MISSION.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MIXFILE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MONOC.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MOUSE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MPLAYER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MSGBOX.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="MSGLIST.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="NETDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="NOSEQCON.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="NULLCONN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="NULLDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="NULLMGR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="OBJECT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="ODATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="OPTIONS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="OVERLAY.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="PACKET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="POWER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="PROFILE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="QUEUE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="RADAR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="RADIO.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="RAND.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="RAWFILE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="REINF.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="RULES.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SAVELOAD.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SCENARIO.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SCORE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SCROLL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SEQCONN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SHAPEBTN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SIDEBAR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SIDEBARGlyphx.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SLIDER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SMUDGE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SOUNDDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SPECIAL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="STARTUP.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="STATS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="SUPER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TAB.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TARCOM.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TARGET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TCPIP.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TEAM.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TEAMTYPE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TECHNO.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TEMPLATE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TERRAIN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TEXTBTN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="THEME.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TOGGLE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TRIGGER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TURRET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="TXTLABEL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="UDATA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="UNIT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="UTRACKER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="VECTOR.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="VISUDLG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\ALLOC.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\BUFFER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\BUFFGLBL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\DDRAW.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\DIPTHONG.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\DrawMisc.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\DRAWRECT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\FONT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\GBUFFER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\GETSHAPE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\ICONSET.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\IFF.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\IRANDOM.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\KEYBOARD.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\LOAD.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\LOADFONT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\LOADPAL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\MEM.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\MORPHPAL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\MOUSEWW.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\NEWDEL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\PALETTE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\REGIONSZ.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\SET_FONT.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\TIMER.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\TIMERDWN.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\TIMERINI.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\WINDOWS.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\WINHIDE.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\WRITEPCX.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\WSA.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="win32lib\_DIPTABL.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="WINSTUB.CPP">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource\TiberianDawn.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetApi\DotNetApi.csproj">
+      <Project>{7dc695ab-8400-42df-8af6-1fd91673d60c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
