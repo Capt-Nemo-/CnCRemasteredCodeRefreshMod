@@ -157,6 +157,8 @@ BOOL WINAPI DllMain(HINSTANCE instance, unsigned int fdwReason, void *lpvReserve
 // Heap_Dump_Check( "first thing in main" );
 //	malloc(1);
 
+int _argcBckup;
+
 int DLL_Startup(const char * command_line_in)
 {
 	RunningAsDLL = true;
@@ -534,6 +536,8 @@ int DLL_Startup(const char * command_line_in)
 			*/
 			Memory_Error = &Memory_Error_Handler;
 
+			_argcBckup = argc; //Nemo: Init_MMX below corrupts the stack or something and argc variable is destroyed.
+
 			/*
 			** Initialise MMX support if its available
 			*/
@@ -541,6 +545,8 @@ int DLL_Startup(const char * command_line_in)
 			if (MMXAvailable){
 				Init_MMX();
 			}
+
+			argc = _argcBckup;
 
 			CCDebugString ("C&C95 - Creating mouse class.\n");
 			WWMouse = new WWMouseClass(&SeenBuff, 32, 32);
