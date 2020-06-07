@@ -320,20 +320,20 @@ int DLL_Startup(const char * command_line_in)
 
 		WindowsTimer = new WinTimerClass(60,FALSE);
 
-		int time_test = WindowsTimer->Get_System_Tick_Count();
-		Sleep (1000);
-		if (WindowsTimer->Get_System_Tick_Count() == time_test){
-#ifdef FRENCH
-			MessageBox(0, "Error - L'horloge systŠme n'a pas pu s'initialiser en raison de l'instabilit‚ du sytŠme. Vous devez red‚marrer Windows.",  "Command & Conquer" , MB_OK|MB_ICONSTOP);
-#else
-#ifdef	GERMAN
-			MessageBox(0, "Fehler - das Timer-System konnte aufgrund einer Instabilit„t des Systems nicht initialisiert werden. Bitte starten Sie Windows neu.", "Command & Conquer", MB_OK|MB_ICONSTOP);
-#else
-			MessageBox(0, "Error - Timer system failed to start due to system instability. You need to restart Windows.", "Command & Conquer", MB_OK|MB_ICONSTOP);
-#endif	//GERMAN
-#endif	//FRENCH
-			return(EXIT_FAILURE);
-		}
+// 		int time_test = WindowsTimer->Get_System_Tick_Count();
+// 		Sleep (1000);
+// 		if (WindowsTimer->Get_System_Tick_Count() == time_test){
+// #ifdef FRENCH
+// 			MessageBox(0, "Error - L'horloge systŠme n'a pas pu s'initialiser en raison de l'instabilit‚ du sytŠme. Vous devez red‚marrer Windows.",  "Command & Conquer" , MB_OK|MB_ICONSTOP);
+// #else
+// #ifdef	GERMAN
+// 			MessageBox(0, "Fehler - das Timer-System konnte aufgrund einer Instabilit„t des Systems nicht initialisiert werden. Bitte starten Sie Windows neu.", "Command & Conquer", MB_OK|MB_ICONSTOP);
+// #else
+// 			MessageBox(0, "Error - Timer system failed to start due to system instability. You need to restart Windows.", "Command & Conquer", MB_OK|MB_ICONSTOP);
+// #endif	//GERMAN
+// #endif	//FRENCH
+// 			return(EXIT_FAILURE);
+// 		}
 
 		RawFileClass cfile("CONQUER.INI");
 
