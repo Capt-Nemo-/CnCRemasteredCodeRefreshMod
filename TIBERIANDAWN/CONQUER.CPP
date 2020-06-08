@@ -442,6 +442,11 @@ void Keyboard_Process(KeyNumType &input)
 		return;
 	}
 
+	const KeyNumType plain = input & ~(WWKEY_SHIFT_BIT|WWKEY_ALT_BIT|WWKEY_CTRL_BIT);	
+	const auto vkKey = KN_To_VK(plain);
+
+	DotNetApiVc::OnKeyInput(input, vkKey, true);
+		
 #ifndef DEMO
 	/*
 	**	For network & modem, process user input for inter-player messages.
@@ -452,7 +457,6 @@ void Keyboard_Process(KeyNumType &input)
 	** Use WWKEY values because KN values have WWKEY_VK_BIT or'd in with them
 	** and we need WWKEY_VK_BIT to still be set if it is.
 	*/
-	KeyNumType plain = input & ~(WWKEY_SHIFT_BIT|WWKEY_ALT_BIT|WWKEY_CTRL_BIT);
 
 #ifdef CHEAT_KEYS
 
@@ -513,8 +517,8 @@ void Keyboard_Process(KeyNumType &input)
 	if (input & WWKEY_SHIFT_BIT) action = 1;
 	if (input & WWKEY_ALT_BIT) action = 3;
 	if (input & WWKEY_CTRL_BIT) action = 2;
-
-	switch (KN_To_VK(plain)) {
+		
+	switch (vkKey) {
 
 		/*
 		**	Center the map around the currently selected objects. If no
@@ -612,7 +616,7 @@ void Keyboard_Process(KeyNumType &input)
 		case VK_F9:
 		case VK_F10:
 			if (!Debug_Map) {
-				Handle_View(KN_To_VK(plain) - VK_F7, action);
+				Handle_View(vkKey - VK_F7, action);
 			}
 			break;
 #if (0)
@@ -639,7 +643,7 @@ void Keyboard_Process(KeyNumType &input)
 		case VK_8:
 		case VK_9:
 		case VK_0:
-			Handle_Team(KN_To_VK(plain) - VK_1, action);
+			Handle_Team(vkKey - VK_1, action);
 			break;
 
 		/*
@@ -725,6 +729,9 @@ void Keyboard_Process(KeyNumType &input)
 		Debug_Key(input);
 	}
 #endif
+
+	if (input != KN_NONE)
+		DotNetApiVc::OnKeyInput(input, vkKey, false);
 }
 
 
@@ -1471,6 +1478,8 @@ void Reallocate_Big_Shape_Buffer(void);
 
 bool Main_Loop()
 {
+	DotNetApiVc::MainLoopStart();
+	
 	KeyNumType	input;					// Player input.
 	int 			x;
 	int 			y;
@@ -1577,7 +1586,10 @@ bool Main_Loop()
 	/*
 	**	AI logic operations are performed here.
 	*/
+
+	DotNetApiVc::AiStart(Logic);	
 	Logic.AI();
+	DotNetApiVc::AiEnd(Logic);
 
 //	Heap_Dump_Check( "After Logic.AI" );
 
@@ -1696,6 +1708,9 @@ bool Main_Loop()
 
 	Sync_Delay();
 //	InMainLoop = false;
+
+	DotNetApiVc::MainLoopEnd();
+	
 	return(!GameActive);
 }
 
