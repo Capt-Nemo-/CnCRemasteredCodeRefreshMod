@@ -79,7 +79,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"function.h"
-#include "DotNetApiVc.h"
+// #include "DotNetApiVc.h"
 
 
 int const InfantryClass::HumanShape[32] = {0,0,7,7,7,7,6,6,6,6,5,5,5,5,5,4,4,4,3,3,3,3,2,2,2,2,1,1,1,1,1,0};
@@ -335,7 +335,7 @@ void * InfantryClass::operator new(size_t)
 	if (ptr) 
 	{
 		((InfantryClass *)ptr)->Set_Active();
-		DotNetApiVc::OnActivated(static_cast<InfantryClass*>(ptr));	
+		// DotNetApiVc::OnActivated(static_cast<InfantryClass*>(ptr));	
 	}
 	return(ptr);
 }
@@ -360,7 +360,7 @@ void InfantryClass::operator delete(void *ptr)
 	if (ptr) 
 	{
 		((InfantryClass *)ptr)->IsActive = false;
-		DotNetApiVc::OnDeactivated(static_cast<InfantryClass*>(ptr));	
+		// DotNetApiVc::OnDeactivated(static_cast<InfantryClass*>(ptr));	
 	}
 	Infantry.Free((InfantryClass *)ptr);
 		

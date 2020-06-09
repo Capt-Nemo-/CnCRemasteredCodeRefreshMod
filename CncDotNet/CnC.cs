@@ -10,7 +10,9 @@ namespace CncDotNet
     {
         private static bool Initialized { get; set; }
 
-        private static INativeApiRoot Native { get; set; }
+        public static INativeApiRoot Native { get; private set; }
+
+        private static MissionScriptBase[] MissionScripts { get; set; }
         
         [PublicAPI]
         public static CnC MainInit(string[] cmdLine, INativeApiRoot root)
@@ -21,6 +23,9 @@ namespace CncDotNet
             Initialized = true;
 
             Native = root;
+
+            MissionScripts = new MissionScriptBase[] {new QuickSaveScript()};
+
             return new CnC();
         }
 
@@ -32,7 +37,14 @@ namespace CncDotNet
         public void ProcessKeyInput(int kn, int vk, bool preview)
         {
             var wfKey = (Keys) vk;
-            
+
+            foreach (MissionScriptBase script in MissionScripts)
+            {
+                if (preview)
+                    script.OnKeyInputPreview(wfKey);
+                else
+                    script.OnKeyInput(wfKey);
+            }
         }
     }
 }

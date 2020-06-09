@@ -1587,9 +1587,9 @@ bool Main_Loop()
 	**	AI logic operations are performed here.
 	*/
 
-	DotNetApiVc::AiStart(Logic);	
+	// DotNetApiVc::AiStart(Logic);	
 	Logic.AI();
-	DotNetApiVc::AiEnd(Logic);
+	// DotNetApiVc::AiEnd(Logic);
 
 //	Heap_Dump_Check( "After Logic.AI" );
 

@@ -191,8 +191,6 @@ extern long LParam;
 //#include <modem.h>
 //#include <fast.h>
 
-int Global_Ticks_Per_Sec = 60;
-
 extern long Frame;
 inline CELL Coord_XCell(COORDINATE coord) {return (CELL)(*(((unsigned char*)&coord)+1));}
 inline CELL Coord_YCell(COORDINATE coord) {return (CELL)(*(((unsigned char*)&coord)+3));}

@@ -50,6 +50,7 @@
     <Compile Include="INativeApiRoot.cs" />
     <Compile Include="MissionScriptBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuickSaveScript.cs" />
     <Compile Include="ResharperAnnotations.gen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
