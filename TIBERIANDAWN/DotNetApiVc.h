@@ -1,8 +1,6 @@
 #pragma once
-#include "infantry.h"
-#include "logic.h"
-
-//..\bin\$(Configuration)\
+#include "INFANTRY.H"
+#include "LOGIC.H"
 
 class DotNetApiVc
 {
