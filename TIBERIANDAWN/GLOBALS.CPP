@@ -58,7 +58,6 @@ bool Debug_Trap_Check_Heap = false;	// true = check the Heap
 bool Debug_Instant_Build = false;
 bool Debug_Force_Crash = false;
 
-
 TFixedIHeapClass<UnitClass>		Units;
 TFixedIHeapClass<FactoryClass>	Factories;
 TFixedIHeapClass<TerrainClass>	Terrains;

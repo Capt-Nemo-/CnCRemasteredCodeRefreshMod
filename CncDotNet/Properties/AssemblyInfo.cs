@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DotNetApi")]
+[assembly: AssemblyTitle(".NET mod loader and SDK for CnC Remastered by Nemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DotNetApi")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("Copyright © Nemo 2020 :)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

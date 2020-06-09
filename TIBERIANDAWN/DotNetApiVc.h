@@ -14,9 +14,7 @@ public:
 	
 	static void AiStart(const LogicClass& logic);
 	static void AiEnd(const LogicClass& logic);
-	static void OnActivated(InfantryClass* obj);
-	static void OnDeactivated(InfantryClass* obj);
-	static void OnKeyInput(const int inputKN, const int inputVK, bool preview);
-// private:
-// 	static void SaveGameHandler(System::String^ filename, System::String^ description);
+	static void OnActivated(const InfantryClass* obj);
+	static void OnDeactivated(const InfantryClass* obj);
+	static void OnKeyInput(int inputKN, int inputVK, bool preview);
 };

@@ -318,7 +318,7 @@ int DLL_Startup(const char * command_line_in)
 #endif
 	if (Parse_Command_Line(argc, argv)) {
 
-		WindowsTimer = new WinTimerClass(60,FALSE);
+		WindowsTimer = new WinTimerClass(Global_Ticks_Per_Sec,FALSE);
 
 // 		int time_test = WindowsTimer->Get_System_Tick_Count();
 // 		Sleep (1000);

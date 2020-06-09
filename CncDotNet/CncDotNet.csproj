@@ -7,8 +7,8 @@
     <ProjectGuid>{7DC695AB-8400-42DF-8AF6-1FD91673D60C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetApi</RootNamespace>
-    <AssemblyName>DotNetApi</AssemblyName>
+    <RootNamespace>CncDotNet</RootNamespace>
+    <AssemblyName>CncDotNet</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -45,7 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DotNetApiCs.cs" />
+    <Compile Include="CnCTextColor.cs" />
+    <Compile Include="CnC.cs" />
+    <Compile Include="INativeApiRoot.cs" />
+    <Compile Include="MissionScriptBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResharperAnnotations.gen.cs" />
   </ItemGroup>

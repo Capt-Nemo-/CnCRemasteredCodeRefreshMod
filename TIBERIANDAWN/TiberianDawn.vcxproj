@@ -36,7 +36,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>C:\Steam\steamapps\common\CnCRemastered</OutDir>
+    <OutDir>C:\Steam\steamapps\common\CnCRemastered\</OutDir>
     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -894,7 +894,7 @@
     <ResourceCompile Include="Resource\TiberianDawn.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNetApi\DotNetApi.csproj">
+    <ProjectReference Include="..\CncDotNet\CncDotNet.csproj">
       <Project>{7dc695ab-8400-42df-8af6-1fd91673d60c}</Project>
     </ProjectReference>
   </ItemGroup>

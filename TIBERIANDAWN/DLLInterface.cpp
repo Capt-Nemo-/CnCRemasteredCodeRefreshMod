@@ -36,9 +36,6 @@
 #include "defines.h" // VOC_COUNT, VOX_COUNT
 #include "SidebarGlyphx.h"
 
-
-
-
 /*
 ** Externs
 */
