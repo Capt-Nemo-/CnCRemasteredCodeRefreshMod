@@ -294,37 +294,37 @@ int DLL_Startup(const char* command_line_in)
 	/*
 	**	Remember the current working directory and drive.
 	*/
-#if (0)	//PG_TO_FIX
-	unsigned olddrive;
-	char oldpath[MAX_PATH];
-	getcwd(oldpath, sizeof(oldpath));
-	_dos_getdrive(&olddrive);
+// #if (0)	//PG_TO_FIX
+// 	unsigned olddrive;
+// 	char oldpath[MAX_PATH];
+// 	getcwd(oldpath, sizeof(oldpath));
+// 	_dos_getdrive(&olddrive);
+//
+//
+// 	/*
+// 	**	Change directory to the where the executable is located. Handle the
+// 	**	case where there is no path attached to argv[0].
+// 	*/
+// 	char drive[_MAX_DRIVE];
+// 	char path[_MAX_PATH];
+// 	unsigned drivecount;
+// 	_splitpath(argv[0], drive, path, NULL, NULL);
+// 	if (!drive[0]) {
+// 		drive[0] = ('A' + olddrive)-1;
+// 	}
+// 	if (!path[0]) {
+// 		strcpy(path, ".");
+// 	}
+// 	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
+// 	if (path[strlen(path)-1] == '\\') {
+// 		path[strlen(path)-1] = '\0';
+// 	}
+// 	chdir(path);
+// #endif
 
-
-	/*
-	**	Change directory to the where the executable is located. Handle the
-	**	case where there is no path attached to argv[0].
-	*/
-	char drive[_MAX_DRIVE];
-	char path[_MAX_PATH];
-	unsigned drivecount;
-	_splitpath(argv[0], drive, path, NULL, NULL);
-	if (!drive[0]) {
-		drive[0] = ('A' + olddrive)-1;
-	}
-	if (!path[0]) {
-		strcpy(path, ".");
-	}
-	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
-	if (path[strlen(path)-1] == '\\') {
-		path[strlen(path)-1] = '\0';
-	}
-	chdir(path);
-#endif
-
-#ifdef JAPANESE
-	ForceEnglish = false;
-#endif
+// #ifdef JAPANESE
+// 	ForceEnglish = false;
+// #endif
 	if (Parse_Command_Line(argc, argv))
 	{
 		WindowsTimer = new WinTimerClass(DotNetApiVc::Global_Ticks_Per_Sec,FALSE);
@@ -346,9 +346,9 @@ int DLL_Startup(const char* command_line_in)
 
 		RawFileClass cfile("CONQUER.INI");
 
-#ifdef JAPANESE
-		//////////////////////////////////////if(!ForceEnglish) KBLanguage = 1;
-#endif
+// #ifdef JAPANESE
+// 		//////////////////////////////////////if(!ForceEnglish) KBLanguage = 1;
+// #endif
 
 
 		/*
@@ -368,51 +368,50 @@ int DLL_Startup(const char* command_line_in)
 		/*
 		** If there is not enough disk space free, dont allow the product to run.
 		*/
-		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE)
-		{
-#ifdef GERMAN
-			char	disk_space_message [512];
-			sprintf (disk_space_message, "Nicht genug Festplattenplatz fr Command & Conquer.\nSie brauchen %d MByte freien Platz auf der Festplatte.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
-			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
-			if ( WindowsTimer )
-				delete WindowsTimer;
-			return (EXIT_FAILURE);
-#endif
-#ifdef FRENCH
-			char	disk_space_message [512];
-			sprintf (disk_space_message, "Espace disque insuffisant pour lancer Command & Conquer.\nVous devez disposer de %d Mo d'espace disponsible sur disque dur.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
-			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
-			if ( WindowsTimer )
-				delete WindowsTimer;
-			return (EXIT_FAILURE);
-#endif
-#if !(FRENCH | GERMAN)
-			int reply = MessageBox(
-				NULL,
-				"Warning - you are critically low on free disk space for virtual memory and save games. Do you want to play C&C anyway?",
-				"Command & Conquer", MB_ICONQUESTION | MB_YESNO);
-			if (reply == IDNO)
-			{
-				if (WindowsTimer)
-					delete WindowsTimer;
-				return (EXIT_FAILURE);
-			}
+// 		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE)
+// 		{
+// // #ifdef GERMAN
+// // 			char	disk_space_message [512];
+// // 			sprintf (disk_space_message, "Nicht genug Festplattenplatz fr Command & Conquer.\nSie brauchen %d MByte freien Platz auf der Festplatte.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
+// // 			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
+// // 			if ( WindowsTimer )
+// // 				delete WindowsTimer;
+// // 			return (EXIT_FAILURE);
+// // #endif
+// // #ifdef FRENCH
+// // 			char	disk_space_message [512];
+// // 			sprintf (disk_space_message, "Espace disque insuffisant pour lancer Command & Conquer.\nVous devez disposer de %d Mo d'espace disponsible sur disque dur.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
+// // 			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
+// // 			if ( WindowsTimer )
+// // 				delete WindowsTimer;
+// // 			return (EXIT_FAILURE);
+// // #endif
+// // #if !(FRENCH | GERMAN)
+// 			int reply = MessageBox(
+// 				NULL,
+// 				"Warning - you are critically low on free disk space for virtual memory and save games. Do you want to play C&C anyway?",
+// 				"Command & Conquer", MB_ICONQUESTION | MB_YESNO);
+// 			if (reply == IDNO)
+// 			{
+// 				// if (WindowsTimer)
+// 				delete WindowsTimer;
+// 				return (EXIT_FAILURE);
+// 			}
+// // #endif
+// 		}
 
-#endif
-		}
-
-#if (0)                                 // ST - 1/2/2019 5:50PM
-		CDFileClass::Set_CD_Drive (CDList.Get_First_CD_Drive());
-#endif
+// #if (0)                                 // ST - 1/2/2019 5:50PM
+// 		CDFileClass::Set_CD_Drive (CDList.Get_First_CD_Drive());
+// #endif
 		if (cfile.Is_Available())
 		{
-#ifndef NOMEMCHECK
-			char * cdata = (char *)Load_Alloc_Data(cfile);
-			Read_Private_Config_Struct(cdata, &NewConfig);
-			delete [] cdata;
-#else
+// #ifndef NOMEMCHECK
+// 			char * cdata = (char *)Load_Alloc_Data(cfile);
+// 			Read_Private_Config_Struct(cdata, &NewConfig);
+// 			delete [] cdata;
+// #else
 			Read_Private_Config_Struct((char*)Load_Alloc_Data(cfile), &NewConfig);
-#endif
+// #endif
 			Read_Setup_Options(&cfile);
 
 			CCDebugString("C&C95 - Creating main window.\n");
@@ -458,8 +457,10 @@ int DLL_Startup(const char* command_line_in)
 				CCDebugString("C&C95 - Failed to set video mode.\n");
 				MessageBox(MainWindow, Text_String(TXT_UNABLE_TO_SET_VIDEO_MODE), "Command & Conquer",
 				           MB_ICONEXCLAMATION | MB_OK);
-				if (WindowsTimer) delete WindowsTimer;
-				if (Palette) delete [] Palette;
+				// if (WindowsTimer) 
+				delete WindowsTimer;
+				// if (Palette) 
+				delete [] Palette;
 				return (EXIT_FAILURE);
 			}
 
@@ -472,72 +473,72 @@ int DLL_Startup(const char* command_line_in)
 			}
 			else
 			{
-#if (1)	//ST - 1/3/2019 2:11PM
+// #if (1)	//ST - 1/3/2019 2:11PM
 
 				VisiblePage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)0);
 				HiddenPage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)0);
 
 
-#else
-				VisiblePage.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)(GBC_VISIBLE | GBC_VIDEOMEM));
-
-				/*
-				** Check that we really got a video memory page. Failure is fatal.
-				*/
-				memset (&surface_capabilities, 0, sizeof(surface_capabilities));
-				VisiblePage.Get_DD_Surface()->GetCaps(&surface_capabilities);
-				if (surface_capabilities.dwCaps & DDSCAPS_SYSTEMMEMORY){
-					/*
-					** Aaaarrgghh!
-					*/
-					CCDebugString ("C&C95 - Unable to allocate primary surface.\n");
-					MessageBox(MainWindow, Text_String(TXT_UNABLE_TO_ALLOCATE_PRIMARY_VIDEO_BUFFER), "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
-					if (WindowsTimer) delete WindowsTimer;
-					if (Palette) delete [] Palette;
-					return (EXIT_FAILURE);
-				}
-
-				/*
-				** If we have enough left then put the hidpage in video memory unless...
-				**
-				** If there is no blitter then we will get better performance with a system
-				** memory hidpage
-				**
-				** Use a system memory page if the user has specified it via the ccsetup program.
-				*/
-				CCDebugString ("C&C95 - Allocating back buffer ");
-				long video_memory = Get_Free_Video_Memory();
-				unsigned video_capabilities = Get_Video_Hardware_Capabilities();
-				if (video_memory < ScreenWidth*ScreenHeight ||
-						(! (video_capabilities & VIDEO_BLITTER)) ||
-						(video_capabilities & VIDEO_NO_HARDWARE_ASSIST) ||
-						!VideoBackBufferAllowed){
-					CCDebugString ("in system memory.\n");
-					HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
-				} else {
-					//HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
-					CCDebugString ("in video memory.\n");
-					HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)GBC_VIDEOMEM);
-
-					/*
-					** Make sure we really got a video memory hid page. If we didnt then things
-					** will run very slowly.
-					*/
-					memset (&surface_capabilities, 0, sizeof(surface_capabilities));
-					HiddenPage.Get_DD_Surface()->GetCaps(&surface_capabilities);
-					if (surface_capabilities.dwCaps & DDSCAPS_SYSTEMMEMORY){
-						/*
-						** Oh dear, big trub. This must be an IBM Aptiva or something similarly cruddy.
-						** We must redo the Hidden Page as system memory.
-						*/
-						AllSurfaces.Remove_DD_Surface(HiddenPage.Get_DD_Surface());  // Remove the old surface from the AllSurfaces list
-						HiddenPage.Get_DD_Surface()->Release();
-						HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
-					}else{
-						VisiblePage.Attach_DD_Surface(&HiddenPage);
-					}
-				}
-#endif
+// #else
+// 				VisiblePage.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)(GBC_VISIBLE | GBC_VIDEOMEM));
+//
+// 				/*
+// 				** Check that we really got a video memory page. Failure is fatal.
+// 				*/
+// 				memset (&surface_capabilities, 0, sizeof(surface_capabilities));
+// 				VisiblePage.Get_DD_Surface()->GetCaps(&surface_capabilities);
+// 				if (surface_capabilities.dwCaps & DDSCAPS_SYSTEMMEMORY){
+// 					/*
+// 					** Aaaarrgghh!
+// 					*/
+// 					CCDebugString ("C&C95 - Unable to allocate primary surface.\n");
+// 					MessageBox(MainWindow, Text_String(TXT_UNABLE_TO_ALLOCATE_PRIMARY_VIDEO_BUFFER), "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
+// 					if (WindowsTimer) delete WindowsTimer;
+// 					if (Palette) delete [] Palette;
+// 					return (EXIT_FAILURE);
+// 				}
+//
+// 				/*
+// 				** If we have enough left then put the hidpage in video memory unless...
+// 				**
+// 				** If there is no blitter then we will get better performance with a system
+// 				** memory hidpage
+// 				**
+// 				** Use a system memory page if the user has specified it via the ccsetup program.
+// 				*/
+// 				CCDebugString ("C&C95 - Allocating back buffer ");
+// 				long video_memory = Get_Free_Video_Memory();
+// 				unsigned video_capabilities = Get_Video_Hardware_Capabilities();
+// 				if (video_memory < ScreenWidth*ScreenHeight ||
+// 						(! (video_capabilities & VIDEO_BLITTER)) ||
+// 						(video_capabilities & VIDEO_NO_HARDWARE_ASSIST) ||
+// 						!VideoBackBufferAllowed){
+// 					CCDebugString ("in system memory.\n");
+// 					HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
+// 				} else {
+// 					//HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
+// 					CCDebugString ("in video memory.\n");
+// 					HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)GBC_VIDEOMEM);
+//
+// 					/*
+// 					** Make sure we really got a video memory hid page. If we didnt then things
+// 					** will run very slowly.
+// 					*/
+// 					memset (&surface_capabilities, 0, sizeof(surface_capabilities));
+// 					HiddenPage.Get_DD_Surface()->GetCaps(&surface_capabilities);
+// 					if (surface_capabilities.dwCaps & DDSCAPS_SYSTEMMEMORY){
+// 						/*
+// 						** Oh dear, big trub. This must be an IBM Aptiva or something similarly cruddy.
+// 						** We must redo the Hidden Page as system memory.
+// 						*/
+// 						AllSurfaces.Remove_DD_Surface(HiddenPage.Get_DD_Surface());  // Remove the old surface from the AllSurfaces list
+// 						HiddenPage.Get_DD_Surface()->Release();
+// 						HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
+// 					}else{
+// 						VisiblePage.Attach_DD_Surface(&HiddenPage);
+// 					}
+// 				}
+// #endif
 			}
 			ScreenHeight = 1536;
 
@@ -608,12 +609,12 @@ int DLL_Startup(const char* command_line_in)
 			}
 			SlowPalette = WWGetPrivateProfileInt("Options", "SlowPalette", 1, buffer);
 
-#ifdef DEMO
-			/*
-			**	Check for override directory path for CD searches.
-			*/
-			WWGetPrivateProfileString("CD", "Path", ".", OverridePath, sizeof(OverridePath), buffer);
-#endif
+// #ifdef DEMO
+// 			/*
+// 			**	Check for override directory path for CD searches.
+// 			*/
+// 			WWGetPrivateProfileString("CD", "Path", ".", OverridePath, sizeof(OverridePath), buffer);
+// #endif
 
 			/*
 			** Regardless of whether we should run it or not, here we're
