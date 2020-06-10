@@ -18,4 +18,6 @@ public:
 	// static void OnActivated(const InfantryClass* obj);
 	// static void OnDeactivated(const InfantryClass* obj);
 	static void OnKeyInput(int inputKN, int inputVK, bool preview);
+	static void DebugBox(const char* str);
+	static void DebugBox(int str);
 };

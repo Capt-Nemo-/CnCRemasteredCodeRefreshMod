@@ -9,7 +9,10 @@ namespace DebugApp
         //[return: MarshalAs(UnmanagedType.)]
 
         [DllImport("TiberianDawn.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int CNC_Version(uint versionIn);
+        private static extern uint CNC_Version(uint versionIn);
+        
+        [DllImport("TiberianDawn.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void CNC_Init_2();
         
         public Form1()
         {
@@ -18,7 +21,9 @@ namespace DebugApp
 
         protected override void OnLoad(EventArgs e)
         {
-            int ver = CNC_Version(45);
+            // uint ver = CNC_Version(45);
+
+            CNC_Init_2();
         }
     }
 }

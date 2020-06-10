@@ -34,6 +34,7 @@
 #include "DLLInterface.h"
 #include "Gadget.h"
 #include "defines.h" // VOC_COUNT, VOX_COUNT
+#include "DotNetApiVc.h"
 #include "SidebarGlyphx.h"
 
 /*
@@ -480,7 +481,24 @@ extern "C" __declspec(dllexport) unsigned int __cdecl CNC_Version(unsigned int v
 }
 
 
+extern "C" __declspec(dllexport) void __cdecl CNC_Init_2()
+{
+	//EventCallbackStruct new_event;
+	
+	//new_event.EventType = CALLBACK_EVENT_CENTER_CAMERA;
+	/*new_event.CenterCamera.CoordX = coord_x;
+	new_event.CenterCamera.CoordY = coord_y;*/
 
+	//new_event.GlyphXPlayerID = 0;
+	
+	//CNC_Init(, nullptr);
+
+	DLLExportClass::Set_Content_Directory(NULL);
+	
+	DLL_Startup(R"(-CD"C:\Steam\steamapps\common\CnCRemastered\DATA\CNCDATA\TIBERIAN_DAWN\CD1")");
+
+	DLLExportClass::Init();
+}
 
 /**************************************************************************************************
 * CNC_Init -- Initialize the .DLL
@@ -495,14 +513,26 @@ extern "C" __declspec(dllexport) unsigned int __cdecl CNC_Version(unsigned int v
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Init(const char *command_line, CNC_Event_Callback_Type event_callback)
 {
+	//void (*t)(const EventCallbackStruct&) = (*event_callback);
+	
+	DotNetApiVc::DebugBox("CNC_Init");	
+	DotNetApiVc::DebugBox(command_line);
+	//DotNetApiVc::DebugBox((int)event_callback);
+	
 	DLLExportClass::Set_Content_Directory(NULL);
 	
 	DLL_Startup(command_line);
 
+	DotNetApiVc::DebugBox("DLL_Startup end");	
+
 	// MBL 
 	DLLExportClass::Set_Event_Callback( event_callback );
 
+	DotNetApiVc::DebugBox("DLLExportClass::Init");	
+	
 	DLLExportClass::Init();
+
+	DotNetApiVc::DebugBox("CNC_Init end");	
 }
 
 
@@ -540,6 +570,8 @@ void DLL_Shutdown(void)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Config(const CNCRulesDataStruct& rules)
 {
+	DotNetApiVc::DebugBox("CNC_Config");
+	
 	DLLExportClass::Config(rules);
 }
 
@@ -559,6 +591,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Config(const CNCRulesDataStruc
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Add_Mod_Path(const char *mod_path)
 {
+	DotNetApiVc::DebugBox("addmod");
+	
 	DLLExportClass::Add_Mod_Path(mod_path);
 }
 
@@ -579,6 +613,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Add_Mod_Path(const char *mod_p
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Visible_Page(unsigned char *buffer_in, unsigned int &width, unsigned int &height)
 {
+	DotNetApiVc::DebugBox("getvisiblepage");
+	
 	if (!DLLExportClass::Legacy_Render_Enabled() || (buffer_in == NULL)) {
 		return false;
 	}
@@ -621,6 +657,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Visible_Page(unsigned char
 
 extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Palette(unsigned char(&palette_in)[256][3])
 {
+	DotNetApiVc::DebugBox("get palette");
+	
 	memcpy(palette_in, CurrentPalette, sizeof(palette_in));
 	return true;
 }
@@ -641,6 +679,7 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Palette(unsigned char(&pal
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Set_Multiplayer_Data(int scenario_index, CNCMultiplayerOptionsStruct &game_options, int num_players, CNCPlayerInfoStruct *player_list, int max_players)
 {
+	DotNetApiVc::DebugBox("set mp data");
 	
 	if (num_players <= 0) {
 		return false;
@@ -721,6 +760,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Set_Multiplayer_Data(int scena
 
 extern "C" __declspec(dllexport) bool __cdecl CNC_Clear_Object_Selection(uint64 player_id)
 {
+	DotNetApiVc::DebugBox("clear selection");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return false;
 	}
@@ -732,6 +773,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Clear_Object_Selection(uint64 
 
 extern "C" __declspec(dllexport) bool __cdecl CNC_Select_Object(uint64 player_id, int object_type_id, int object_to_select_id)
 {
+	DotNetApiVc::DebugBox("select object");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return false;
 	}
@@ -1007,6 +1050,7 @@ void GlyphX_Assign_Houses(void)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Start_Instance(int scenario_index, int build_level, const char *faction, const char *game_type, const char *content_directory, int sabotaged_structure, const char *override_map_name)
 {
+	DotNetApiVc::DebugBox("start instance");
 	return CNC_Start_Instance_Variation(scenario_index, (int)SCEN_VAR_NONE, (int)SCEN_DIR_EAST, build_level, faction, game_type, content_directory, sabotaged_structure, override_map_name);
 }
 
@@ -1065,6 +1109,8 @@ void HandleSabotagedStructure(int structure_type)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Read_INI(int scenario_index, int scenario_variation, int scenario_direction, const char *content_directory, const char *override_map_name, char *ini_buffer, int _ini_buffer_size)
 {
+	DotNetApiVc::DebugBox("read ini");
+	
 	if (content_directory == NULL) {
 		return false;
 	}
@@ -1140,6 +1186,7 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Read_INI(int scenario_index, i
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Set_Home_Cell(int x, int y, uint64 player_id)
 {
+	DotNetApiVc::DebugBox("set home cell");
 	DLLExportClass::Set_Home_Cell(x, y, player_id);
 }
 
@@ -1159,6 +1206,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Set_Home_Cell(int x, int y, ui
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Start_Instance_Variation(int scenario_index, int scenario_variation, int scenario_direction, int build_level, const char *faction, const char *game_type, const char *content_directory, int sabotaged_structure, const char *override_map_name)
 {
+	DotNetApiVc::DebugBox("start instance variation");
+	
 	if (game_type == NULL) {
 		return false;
 	}
@@ -1285,6 +1334,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Start_Instance_Variation(int s
 extern "C" __declspec(dllexport) bool __cdecl CNC_Start_Custom_Instance(const char* content_directory, const char* directory_path, 
 	const char* scenario_name, int build_level, bool multiplayer)
 {
+	DotNetApiVc::DebugBox("start custom instance");
+	
 	if (content_directory == NULL) {
 		return false;
 	}
@@ -1435,6 +1486,8 @@ bool Debug_Write_Shape(const char *file_name, void const * shapefile, int shapen
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Advance_Instance(uint64 player_id)
 {
+	DotNetApiVc::DebugBox("advance instance");
+	
 	//DLLExportClass::Set_Event_Callback(event_callback);
 	
 	InMainLoop = true;
@@ -1670,6 +1723,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Advance_Instance(uint64 player
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Save_Load(bool save, const char *file_path_and_name, const char *game_type)
 {
+	DotNetApiVc::DebugBox("save load");
+	
 	bool result = false;
 
 	if (save) {
@@ -1721,6 +1776,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Save_Load(bool save, const cha
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Set_Difficulty(int difficulty)
 {
+	DotNetApiVc::DebugBox("set difficulty");
+	
 	if (GameToPlay == GAME_NORMAL) {
 		Set_Scenario_Difficulty(difficulty);
 	}
@@ -1741,6 +1798,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Set_Difficulty(int difficulty)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Player_Switch_To_AI(uint64 player_id)
 {
+	DotNetApiVc::DebugBox("handle player switch");
+	
 	if (PlayerWins || PlayerLoses || DLLExportClass::Get_Game_Over()) {
 		return;
 	}
@@ -1809,7 +1868,7 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Player_Switch_To_AI(uin
 * History: 3/10/2020 - LLL
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Human_Team_Wins(uint64 quitting_player_id)
-{
+{	
 	GlyphX_Debug_Print("CNC_Handle_Human_Team_Wins");
 	DLLExportClass::Force_Human_Team_Wins(quitting_player_id);
 }
@@ -1822,6 +1881,7 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Human_Team_Wins(uint64 
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Start_Mission_Timer(int time)
 {
+	DotNetApiVc::DebugBox("start mission timer");
 	//Only implemented in Red Alert.
 }
 
@@ -1840,6 +1900,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Start_Mission_Timer(int time)
 **************************************************************************************************/
 void DLLExportClass::Init(void)
 {
+	DotNetApiVc::DebugBox("exp: init");
+	
 	for (int i=0 ; i<MAX_PLAYERS ; i++) {
 		GlyphxPlayerIDs[i] = 0xffffffffull;
 	}
@@ -1905,6 +1967,8 @@ void DLLExportClass::Add_Mod_Path(const char *mod_path)
 **************************************************************************************************/
 void DLLExportClass::Set_Content_Directory(const char *content_directory)
 {
+	DotNetApiVc::DebugBox("exp: set content dir");
+	
 	CCFileClass::Clear_Search_Drives();
 	CCFileClass::Reset_Raw_Path();
 
@@ -1946,6 +2010,8 @@ void DLLExportClass::Set_Content_Directory(const char *content_directory)
 **************************************************************************************************/
 void DLLExportClass::Config(const CNCRulesDataStruct& rules)
 {
+	DotNetApiVc::DebugBox("exp: config");
+	
 	for (int i = 0; i < 3; ++i)
 	{
 		Rule.Diff[i].FirepowerBias = rules.Difficulties[i].FirepowerBias;
@@ -1972,6 +2038,8 @@ void DLLExportClass::Config(const CNCRulesDataStruct& rules)
 extern CELL Views[4];
 void DLLExportClass::Set_Home_Cell(int x, int y, uint64 player_id)
 {
+	DotNetApiVc::DebugBox("exp: set home cell");
+	
 	if (GameToPlay == GAME_NORMAL) {
 		MultiplayerStartPositions[0] = Views[0] = XY_Cell(x, y);
 	}
@@ -2715,6 +2783,8 @@ void DLLExportClass::Force_Human_Team_Wins(uint64 quitting_player_id)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Game_State(GameStateRequestEnum state_type, uint64 player_id, unsigned char *buffer_in, unsigned int buffer_size)
 {
+	DotNetApiVc::DebugBox("get game state");
+	
 	bool got_state = false;
 
 	switch (state_type) {
@@ -2855,6 +2925,8 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Game_State(GameStateReques
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Game_Request(GameRequestEnum request_type)
 {
+	DotNetApiVc::DebugBox("handle game request");
+	
 	switch (request_type)
 	{
 		case INPUT_GAME_MOVIE_DONE:
@@ -2866,6 +2938,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Game_Request(GameReques
 
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Game_Settings_Request(int health_bar_display_mode, int resource_bar_display_mode)
 {
+	DotNetApiVc::DebugBox("handle game settings request");
+	
 	if (!DLLExportClass::Legacy_Render_Enabled()) {
 		return;
 	}
@@ -3447,6 +3521,7 @@ void DLLExportClass::Convert_Type(const ObjectClass *object, CNCObjectStruct &ob
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Input(InputRequestEnum input_event, unsigned char special_key_flags, uint64 player_id, int x1, int y1, int x2, int y2)
 {
+	DotNetApiVc::DebugBox("handle input");
 	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
@@ -3657,6 +3732,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Input(InputRequestEnum 
 
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Structure_Request(StructureRequestEnum request_type, uint64 player_id, int object_id)
 {
+	DotNetApiVc::DebugBox("handle structure request");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
 	}
@@ -3699,6 +3776,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Structure_Request(Struc
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Unit_Request(UnitRequestEnum request_type, uint64 player_id)
 {
+	DotNetApiVc::DebugBox("handle unit request");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
 	}
@@ -3752,6 +3831,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Unit_Request(UnitReques
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Sidebar_Request(SidebarRequestEnum request_type, uint64 player_id, int buildable_type, int buildable_id, short cell_x, short cell_y)
 {
+	DotNetApiVc::DebugBox("handle sidebar request");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
 	}
@@ -3801,6 +3882,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Sidebar_Request(Sidebar
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_SuperWeapon_Request(SuperWeaponRequestEnum request_type, uint64 player_id, int buildable_type, int buildable_id, int x1, int y1)
 {
+	DotNetApiVc::DebugBox("handle sw req");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
 	}
@@ -3827,6 +3910,8 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_SuperWeapon_Request(Sup
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_ControlGroup_Request(ControlGroupRequestEnum request_type, uint64 player_id, unsigned char control_group_index)
 {
+		DotNetApiVc::DebugBox("handle controlgroup request");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
 	}
@@ -6703,6 +6788,8 @@ void DLLExportClass::Team_Units_Formation_Toggle_On(uint64 player_id)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Debug_Request(DebugRequestEnum debug_request_type, uint64 player_id, const char *object_name, int x, int y, bool unshroud, bool enemy)
 {
+	DotNetApiVc::DebugBox("handle debug request");
+	
 	if (!DLLExportClass::Set_Player_Context(player_id)) {
 		return;
 	}
@@ -7235,6 +7322,8 @@ bool DLLExportClass::Legacy_Render_Enabled(void)
 **************************************************************************************************/
 void DLLExportClass::Computer_Message(bool last_player_taunt)
 {
+	DotNetApiVc::DebugBox("exp: cmp message");
+	
 	HousesType house;
 	HouseClass *ptr;
 
@@ -7493,6 +7582,8 @@ bool DLLExportClass::Save(FileClass & file)
 **************************************************************************************************/
 bool DLLExportClass::Load(FileClass & file)
 {
+	DotNetApiVc::DebugBox("exp: load");
+	
 	unsigned int version = 0;
 
 	if (file.Read(&version, sizeof(version)) != sizeof(version)) {

@@ -205,19 +205,19 @@ int DLL_Startup(const char* command_line_in)
 	// ST - 3/6/2019 1:36PM
 	//DDSCAPS	surface_capabilities;
 
-	if (Ram_Free(MEM_NORMAL) < 5000000)
-	{
-#ifdef GERMAN
-		printf("Zuwenig Hauptspeicher verfgbar.\n");
-#else
-#ifdef FRENCH
-		printf("M‚moire vive (RAM) insuffisante.\n");
-#else
-		printf("Insufficient RAM available.\n");
-#endif
-#endif
-		return (EXIT_FAILURE);
-	}
+//	if (Ram_Free(MEM_NORMAL) < 5000000)
+//	{
+//#ifdef GERMAN
+//		printf("Zuwenig Hauptspeicher verfgbar.\n");
+//#else
+//#ifdef FRENCH
+//		printf("M‚moire vive (RAM) insuffisante.\n");
+//#else
+//		printf("Insufficient RAM available.\n");
+//#endif
+//#endif
+//		return (EXIT_FAILURE);
+//	}
 
 
 	//void *test_buffer = Alloc(20,MEM_NORMAL);
@@ -354,11 +354,13 @@ int DLL_Startup(const char* command_line_in)
 		/*
 		** Check for existance of MMX support on the processor
 		*/
-		if (Detect_MMX_Availability())
-		{
-			//MessageBox(NULL, "MMX extensions detected - enabling MMX support.", "Command & Conquer",MB_ICONEXCLAMATION|MB_OK);
-			MMXAvailable = true;
-		}
+		//if (Detect_MMX_Availability())
+		//{
+		//	//MessageBox(NULL, "MMX extensions detected - enabling MMX support.", "Command & Conquer",MB_ICONEXCLAMATION|MB_OK);
+		//	MMXAvailable = true;
+		//}
+
+		MMXAvailable = true;
 
 		/*
 		** If there is loads of memory then use uncompressed shapes
