@@ -367,41 +367,19 @@ int DLL_Startup(const char* command_line_in)
 		*/
 		Check_Use_Compressed_Shapes();
 
-		/*
-		** If there is not enough disk space free, dont allow the product to run.
-		*/
-// 		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE)
-// 		{
-// // #ifdef GERMAN
-// // 			char	disk_space_message [512];
-// // 			sprintf (disk_space_message, "Nicht genug Festplattenplatz fr Command & Conquer.\nSie brauchen %d MByte freien Platz auf der Festplatte.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
-// // 			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
-// // 			if ( WindowsTimer )
-// // 				delete WindowsTimer;
-// // 			return (EXIT_FAILURE);
-// // #endif
-// // #ifdef FRENCH
-// // 			char	disk_space_message [512];
-// // 			sprintf (disk_space_message, "Espace disque insuffisant pour lancer Command & Conquer.\nVous devez disposer de %d Mo d'espace disponsible sur disque dur.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
-// // 			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
-// // 			if ( WindowsTimer )
-// // 				delete WindowsTimer;
-// // 			return (EXIT_FAILURE);
-// // #endif
-// // #if !(FRENCH | GERMAN)
-// 			int reply = MessageBox(
-// 				NULL,
-// 				"Warning - you are critically low on free disk space for virtual memory and save games. Do you want to play C&C anyway?",
-// 				"Command & Conquer", MB_ICONQUESTION | MB_YESNO);
-// 			if (reply == IDNO)
-// 			{
-// 				// if (WindowsTimer)
-// 				delete WindowsTimer;
-// 				return (EXIT_FAILURE);
-// 			}
-// // #endif
-// 		}
+				
+		//Nemo: for some bizzare reason if the following disk check is removed/commented out, the dll starts to crash (release mode). Can't figure it out, Disk_Space_Available() has no side effects. Perhaps it's because some variables get optimized away or something.
+		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE) 
+		{
+			int reply = MessageBox(NULL, "Warning - you are critically low on free disk space for virtual memory and save games. Do you want to play C&C anyway?", "Command & Conquer", MB_ICONQUESTION|MB_YESNO);
 
+			if (reply == IDNO)
+			{				
+				delete WindowsTimer;
+				return (EXIT_FAILURE);
+			}
+		}
+		
 // #if (0)                                 // ST - 1/2/2019 5:50PM
 // 		CDFileClass::Set_CD_Drive (CDList.Get_First_CD_Drive());
 // #endif

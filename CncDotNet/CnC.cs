@@ -17,15 +17,16 @@ namespace CncDotNet
         [PublicAPI]
         public static CnC MainInit(string[] cmdLine, INativeApiRoot root)
         {
-            if (Initialized)
-                throw new Exception("Api already initialized.");
-
-            Initialized = true;
-
-            Native = root;
-
-            MissionScripts = new MissionScriptBase[] {new QuickSaveScript()};
-
+            //todo reentry
+            // if (Initialized)
+            //     throw new Exception("Api already initialized.");
+            //
+            // Initialized = true;
+            //
+            // Native = root;
+            //
+            // MissionScripts = new MissionScriptBase[] {new QuickSaveScript()};
+            
             return new CnC();
         }
 
