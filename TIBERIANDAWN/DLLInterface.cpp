@@ -114,8 +114,7 @@ typedef enum
 ** 
 */
 extern "C" __declspec(dllexport) unsigned int __cdecl CNC_Version(unsigned int version_in);
-extern "C" __declspec(dllexport) void __cdecl
-CNC_Init(const char* command_line, CNC_Event_Callback_Type event_callback);
+extern "C" __declspec(dllexport) void __cdecl CNC_Init(const char* command_line, CNC_Event_Callback_Type event_callback);
 extern "C" __declspec(dllexport) void __cdecl CNC_Config(const CNCRulesDataStruct& rules);
 extern "C" __declspec(dllexport) void __cdecl CNC_Add_Mod_Path(const char* mod_path);
 extern "C" __declspec(dllexport) bool __cdecl CNC_Get_Visible_Page(unsigned char* buffer_in, unsigned int& width,

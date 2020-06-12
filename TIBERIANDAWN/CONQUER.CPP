@@ -145,7 +145,7 @@ void Main_Game(int argc, char *argv[])
 	if (!Init_Game(argc, argv)) {
 		return;
 	}
-
+		
 	CCDebugString ("C&C95 - Game initialisation complete.\n");
 	/*
 	**	Game processing loop:

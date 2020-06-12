@@ -632,16 +632,9 @@ int DLL_Startup(const char* command_line_in)
 			Memory_Error_Exit = Print_Error_End_Exit;
 
 			CCDebugString("C&C95 - Entering main game.\n");
-
-			// try
-			// {
+			
 			Main_Game(argc, argv);
-			// }
-			// catch (...)
-			// {
-			// 	return (EXIT_SUCCESS);
-			// }
-
+			
 			if (RunningAsDLL)
 			{
 				return (EXIT_SUCCESS);

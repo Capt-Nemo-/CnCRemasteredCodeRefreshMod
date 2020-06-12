@@ -233,11 +233,15 @@ bool Init_Game(int, char*[])
     Set_Palette(GamePalette);
 
     CCDebugString("C&C95 - About to set the mouse shape\n");
-    /*
+
+	/*
     ** Since there is no mouse shape currently available we need'
     ** to set one of our own.
     */
+#ifndef DOTNETDEBUG
     ShowCursor(FALSE);
+#endif
+	
     if (MouseInstalled)
     {
         temp_mouse_shapes = MixFileClass::Retrieve("MOUSE.SHP");
