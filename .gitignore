@@ -4,19 +4,11 @@
 
 /.vs/CnCRemastered/v16
 /.vs
-/TIBERIANDAWN/Win32/Release
-/bin/Win32
+/TIBERIANDAWN/Win32/
 /TIBERIANDAWN/TiberianDawn.vcxproj.user
-/TIBERIANDAWN/Win32/Debug
-/REDALERT/Win32
+/REDALERT/Win32/
 /REDALERT/RedAlert.vcxproj.user
-/bin/Release
-DotNetApi/.vs/DotNetApi/v16/
-DotNetApi/Release/
-DotNetApi/Debug/
-DotNetApi/DotNetApi.vcxproj.user
-DotNetApi/bin/
-DotNetApi/obj/
-/CncDotNet/obj/
+/bin/
+CncDotNet/obj/
 CncDotNet/bin/
-/DebugApp/obj
+DebugApp/obj
