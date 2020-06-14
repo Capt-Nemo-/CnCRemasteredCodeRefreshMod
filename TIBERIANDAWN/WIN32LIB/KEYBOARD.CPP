@@ -445,7 +445,9 @@ void Clear_KeyBuffer(void)
 
 int Check_Key_Num(void)
 {
-	if (!_Kbd) return(KN_NONE);
+	if (!_Kbd)
+		return(KN_NONE);
+	
 	int key		= _Kbd->Check();
 	int flags	= key & 0xFF00;
 	key		   = key & 0x00FF;

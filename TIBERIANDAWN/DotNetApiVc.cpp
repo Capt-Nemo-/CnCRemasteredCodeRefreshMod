@@ -1,7 +1,6 @@
 #include "DotNetApiVc.h"
 // #include <msclr/marshal.h>
 #include "FUNCTION.H"
-#include "MSGLIST.H"
 
 // #include "KEYBOARD.H"
 // #include <vcclr.h>
@@ -10,90 +9,128 @@ using namespace System;
 using namespace CncDotNet;
 using namespace Runtime::InteropServices;
 
+extern void On_Message(const char* message, float timeout_seconds, __int64 message_id);
+
 ref class CsApi : INativeApiRoot
 {
 public:
 
+	virtual void DeleteSave(String^ filename)
+	{
+		auto fnamePtr = Marshal::StringToHGlobalAnsi(filename);
+
+		try
+		{
+			const char* fnameChar = static_cast<char*>(fnamePtr.ToPointer());
+
+			RawFileClass file(fnameChar);
+			file.Delete();
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(fnamePtr);
+		}
+	}
+
 	virtual void SaveGame(String^ filename, String^ description)
 	{
-		const pin_ptr<String^> fnamePtr = &filename, descPtr = &description;
+		auto fnamePtr = Marshal::StringToHGlobalAnsi(filename), descPtr = Marshal::StringToHGlobalAnsi(description);
 
-		if (!Save_Game(reinterpret_cast<char*>(fnamePtr), reinterpret_cast<char*>(descPtr)))
-			throw gcnew Exception(gcnew String("Save game procedure failed."));
+		try
+		{
+			if (!Save_Game(static_cast<char*>(fnamePtr.ToPointer()), static_cast<char*>(descPtr.ToPointer())))
+				throw gcnew Exception(gcnew String("Save game procedure failed."));
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(fnamePtr);
+			Marshal::FreeHGlobal(descPtr);
+		}
 	}
 
 	virtual void LoadGame(String^ filename)
 	{
-		const pin_ptr<String^> fnamePtr = &filename;
+		auto fnamePtr = Marshal::StringToHGlobalAnsi(filename);
 
-		if (!Load_Game(reinterpret_cast<char*>(fnamePtr)))
-			throw gcnew Exception(gcnew String("Load game procedure failed."));
+		try
+		{
+			const char* fnameChar = static_cast<char*>(fnamePtr.ToPointer());
+
+			RawFileClass file(fnameChar);
+
+			if (file.Is_Available(false))
+			{
+				if (!Load_Game(fnameChar))
+					throw gcnew Exception(gcnew String("Load game procedure failed."));
+			}
+			else
+			{
+				throw gcnew IO::FileNotFoundException("Quick load file not found.");
+			}
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(fnamePtr);
+		}
 	}
 
-	virtual void ShowQuickMessage(String^ text, CnCTextColor color, int timeoutMs)
+	virtual void ShowQuickMessage(String^ text, int timeoutMs)
 	{
-		const auto ticks = timeoutMs == Threading::Timeout::Infinite
-			                   ? -1
-			                   : (timeoutMs / (1000 / DotNetApiVc::Global_Ticks_Per_Sec));
-
 		auto intPtr = Marshal::StringToHGlobalAnsi(text);
-		const auto ptr = static_cast<char*>(static_cast<void*>(intPtr));
 
-		Messages.Add_Message(ptr, static_cast<int>(color), TPF_6PT_GRAD | TPF_USE_GRAD_PAL | TPF_FULLSHADOW, ticks, 0,
-		                     0);
+		try
+		{
+			const auto ptr = static_cast<char*>(intPtr.ToPointer());
 
-		Marshal::FreeHGlobal(intPtr);
+			On_Message(ptr, timeoutMs / 1000.0, -1);
+
+			// Messages.Add_Message(ptr, static_cast<int>(color), TPF_6PT_GRAD | TPF_USE_GRAD_PAL | TPF_FULLSHADOW, 1, 0, 0);				
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(intPtr);
+		}
 	}
 
-	static CnC^ Cs = nullptr;
+	static CncMain^ Cs = nullptr;
 };
 
 void DotNetApiVc::MainInit(const int argc, char* argv[])
 {
+	Shutdown();
+
 	auto strs = gcnew array<String^>(argc);
 
 	for (int i = 0; i < argc; ++i)
 		strs[i] = gcnew String(argv[i]);
 
 	const auto root = gcnew CsApi();
-	CsApi::Cs = CnC::MainInit(strs, root);
+
+	CsApi::Cs = gcnew CncMain(strs, root);
 }
 
-void DotNetApiVc::MainLoopStart()
+void DotNetApiVc::MainLoop()
 {
+	CsApi::Cs->MainLoop();
 }
 
-void DotNetApiVc::MainLoopEnd()
+void DotNetApiVc::ProcessKeystrokes()
 {
+	CsApi::Cs->ProcessKeystrokes();
 }
 
-// void DotNetApiVc::AiStart(const LogicClass& logic)
+void DotNetApiVc::Shutdown()
+{
+	if (CsApi::Cs != nullptr)
+		CsApi::Cs->Shutdown();
+}
+
+// void DotNetApiVc::DebugLine(const char* str)
 // {
+// 	IO::File::AppendAllText("DotNetDbg.txt", DateTime::Now.ToString() + " " + gcnew String(str) + Environment::NewLine);
 // }
 //
-// void DotNetApiVc::AiEnd(const LogicClass& logic)
+// void DotNetApiVc::DebugLine(int str)
 // {
+// 	IO::File::AppendAllText("DotNetDbg.txt", DateTime::Now.ToString() + " " + str.ToString() + Environment::NewLine);
 // }
-//
-// void DotNetApiVc::OnActivated(const InfantryClass* obj)
-// {
-// }
-//
-// void DotNetApiVc::OnDeactivated(const InfantryClass* obj)
-// {
-// }
-
-void DotNetApiVc::OnKeyInput(const int inputKN, const int inputVK, const bool preview)
-{
-	CsApi::Cs->ProcessKeyInput(inputKN, inputVK, preview);
-}
-
-void DotNetApiVc::DebugBox(const char* str)
-{
-	IO::File::AppendAllText("DotNetDbg.txt", DateTime::Now.ToString() + " " + gcnew String(str) + Environment::NewLine);
-}
-
-void DotNetApiVc::DebugBox(int str)
-{
-	IO::File::AppendAllText("DotNetDbg.txt", DateTime::Now.ToString() + " " + str.ToString() + Environment::NewLine);
-}

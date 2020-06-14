@@ -6,11 +6,17 @@ namespace CncDotNet
     [PublicAPI]
     public abstract class MissionScriptBase
     {
-        public virtual void OnKeyInputPreview(Keys key)
+        public CncMain Cnc { get; internal set; }
+
+        public virtual void OnKeyInput(Keys key)
         {
         }
 
-        public virtual void OnKeyInput(Keys key)
+        public virtual void OnStarted()
+        {
+        }
+
+        public virtual void OnStopped()
         {
         }
     }

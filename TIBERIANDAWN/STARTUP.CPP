@@ -39,7 +39,6 @@
 #include	<conio.h>
 #include	<io.h>
 #include  "ccdde.h"
-#include "DotNetApiVc.h"
 
 bool Read_Private_Config_Struct(char* profile, NewConfigType* config);
 void Delete_Swap_Files(void);
@@ -119,7 +118,7 @@ extern void DLL_Shutdown(void);
 
 BOOL WINAPI DllMain(HINSTANCE instance, unsigned int fdwReason, void* lpvReserved)
 {
-	lpvReserved;
+	// lpvReserved;
 
 	switch (fdwReason)
 	{
@@ -128,6 +127,9 @@ BOOL WINAPI DllMain(HINSTANCE instance, unsigned int fdwReason, void* lpvReserve
 		break;
 
 	case DLL_PROCESS_DETACH:
+
+		// DotNetApiVc::Shutdown();
+					
 		if (WindowsTimer)
 		{
 			delete WindowsTimer;
@@ -327,7 +329,7 @@ int DLL_Startup(const char* command_line_in)
 // #endif
 	if (Parse_Command_Line(argc, argv))
 	{
-		WindowsTimer = new WinTimerClass(DotNetApiVc::Global_Ticks_Per_Sec,FALSE);
+		WindowsTimer = new WinTimerClass(60,FALSE);
 
 		// 		int time_test = WindowsTimer->Get_System_Tick_Count();
 		// 		Sleep (1000);
@@ -360,7 +362,7 @@ int DLL_Startup(const char* command_line_in)
 		//	MMXAvailable = true;
 		//}
 
-		MMXAvailable = true;
+		// MMXAvailable = true;
 
 		/*
 		** If there is loads of memory then use uncompressed shapes
@@ -368,11 +370,11 @@ int DLL_Startup(const char* command_line_in)
 		Check_Use_Compressed_Shapes();
 
 				
-		//Nemo: for some bizzare reason if the following disk check is removed/commented out, the dll starts to crash (release mode). Can't figure it out, Disk_Space_Available() has no side effects. Perhaps it's because some variables get optimized away or something.
+		//Nemo: for some bizzare reason if the following disk check is removed/commented out, the dll starts to crash on access violation exception. Can't figure it out, Disk_Space_Available() has no side effects. Perhaps it's because some variables get optimized away or something.
 		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE) 
 		{
 			int reply = MessageBox(NULL, "Warning - you are critically low on free disk space for virtual memory and save games. Do you want to play C&C anyway?", "Command & Conquer", MB_ICONQUESTION|MB_YESNO);
-
+			
 			if (reply == IDNO)
 			{				
 				delete WindowsTimer;
@@ -409,28 +411,28 @@ int DLL_Startup(const char* command_line_in)
 			/*
 			** Set 640x400 video mode. If its not available then try for 640x480
 			*/
-			if (ScreenHeight == 400)
+			// if (ScreenHeight == 400)
+			// {
+			// 	if (Set_Video_Mode(MainWindow, ScreenWidth, ScreenHeight, 8))
+			// 	{
+			// 		video_success = TRUE;
+			// 	}
+			// 	else
+			// 	{
+			// 		if (Set_Video_Mode(MainWindow, ScreenWidth, 480, 8))
+			// 		{
+			// 			video_success = TRUE;
+			// 			ScreenHeight = 480;
+			// 		}
+			// 	}
+			// }
+			// else
+			// {
+			if (Set_Video_Mode(MainWindow, ScreenWidth, ScreenHeight, 8))
 			{
-				if (Set_Video_Mode(MainWindow, ScreenWidth, ScreenHeight, 8))
-				{
-					video_success = TRUE;
-				}
-				else
-				{
-					if (Set_Video_Mode(MainWindow, ScreenWidth, 480, 8))
-					{
-						video_success = TRUE;
-						ScreenHeight = 480;
-					}
-				}
+				video_success = TRUE;
 			}
-			else
-			{
-				if (Set_Video_Mode(MainWindow, ScreenWidth, ScreenHeight, 8))
-				{
-					video_success = TRUE;
-				}
-			}
+			// }
 
 			if (!video_success)
 			{

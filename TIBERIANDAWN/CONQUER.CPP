@@ -445,7 +445,7 @@ void Keyboard_Process(KeyNumType &input)
 	const KeyNumType plain = input & ~(WWKEY_SHIFT_BIT|WWKEY_ALT_BIT|WWKEY_CTRL_BIT);	
 	const auto vkKey = KN_To_VK(plain);
 
-	DotNetApiVc::OnKeyInput(input, vkKey, true);
+	// DotNetApiVc::OnKeyInput(input, vkKey, true);
 		
 #ifndef DEMO
 	/*
@@ -730,8 +730,8 @@ void Keyboard_Process(KeyNumType &input)
 	}
 #endif
 
-	if (input != KN_NONE)
-		DotNetApiVc::OnKeyInput(input, vkKey, false);
+	// if (input != KN_NONE)
+	// 	DotNetApiVc::OnKeyInput(input, vkKey, false);
 }
 
 
@@ -1240,13 +1240,13 @@ void Call_Back(void)
 	/*
 	**	Modem and Null Modem maintenance
 	*/
-	if (GameToPlay == GAME_NULL_MODEM
-	|| ((GameToPlay == GAME_MODEM) && ModemService)){
-	//|| GameToPlay == GAME_INTERNET) {
-		
-		// PG_TO_FIX
-		//NullModem.Service();
-	}
+	// if (GameToPlay == GAME_NULL_MODEM
+	// || ((GameToPlay == GAME_MODEM) && ModemService)){
+	// //|| GameToPlay == GAME_INTERNET) {
+	// 	
+	// 	// PG_TO_FIX
+	// 	//NullModem.Service();
+	// }
 #endif
 }
 
@@ -1477,9 +1477,7 @@ void Reallocate_Big_Shape_Buffer(void);
 
 
 bool Main_Loop()
-{
-	DotNetApiVc::MainLoopStart();
-	
+{		
 	KeyNumType	input;					// Player input.
 	int 			x;
 	int 			y;
@@ -1709,8 +1707,6 @@ bool Main_Loop()
 	Sync_Delay();
 //	InMainLoop = false;
 
-	DotNetApiVc::MainLoopEnd();
-	
 	return(!GameActive);
 }
 
@@ -4028,15 +4024,15 @@ unsigned long Disk_Space_Available(void)
 
 	return 0x7fffffff;
 
-#if (0)
-	struct diskfree_t diskdata;
-	unsigned drive;
-
-	_dos_getdrive(&drive);
-	_dos_getdiskfree(drive, &diskdata);
-
-	return(diskdata.avail_clusters * diskdata.sectors_per_cluster * diskdata.bytes_per_sector);
-#endif
+// #if (0)
+// 	struct diskfree_t diskdata;
+// 	unsigned drive;
+//
+// 	_dos_getdrive(&drive);
+// 	_dos_getdiskfree(drive, &diskdata);
+//
+// 	return(diskdata.avail_clusters * diskdata.sectors_per_cluster * diskdata.bytes_per_sector);
+// #endif
 }
 
 
