@@ -15,6 +15,8 @@ ref class CsApi : INativeApiRoot
 {
 public:
 
+	property String^ CurrentScenarioName { virtual String^ get() { return gcnew String(ScenarioName); } }
+
 	virtual void DeleteSave(String^ filename)
 	{
 		auto fnamePtr = Marshal::StringToHGlobalAnsi(filename);

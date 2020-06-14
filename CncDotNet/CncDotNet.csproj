@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CnCTextColor.cs" />
     <Compile Include="CncMain.cs" />
     <Compile Include="INativeApiRoot.cs" />
     <Compile Include="KeyListener.cs" />
@@ -55,7 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickSaveScript.cs" />
     <Compile Include="ResharperAnnotations.gen.cs" />
-    <Compile Include="SimpleStopwatch.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

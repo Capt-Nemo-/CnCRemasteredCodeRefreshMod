@@ -10,6 +10,7 @@ public:
 	static void MainLoop();
 	static void ProcessKeystrokes();
 	static void Shutdown();
+	
 	// static void DebugLine(const char* str);
 	// static void DebugLine(int str);
 

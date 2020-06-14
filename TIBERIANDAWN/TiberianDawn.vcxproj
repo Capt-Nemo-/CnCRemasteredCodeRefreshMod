@@ -92,6 +92,8 @@
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <AssemblyDebug>false</AssemblyDebug>
+      <EmbedManagedResourceFile>
+      </EmbedManagedResourceFile>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -130,6 +132,8 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <EmbedManagedResourceFile>
+      </EmbedManagedResourceFile>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -223,6 +227,7 @@
     <ClInclude Include="DLLInterface.h" />
     <ClInclude Include="DOOR.H" />
     <ClInclude Include="DotNetApiVc.h" />
+    <ClInclude Include="DotNetLoader.h" />
     <ClInclude Include="DPMI.H" />
     <ClInclude Include="DRIVE.H" />
     <ClInclude Include="EDIT.H" />
@@ -542,6 +547,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="DotNetApiVc.cpp" />
+    <ClCompile Include="DotNetLoader.cpp" />
     <ClCompile Include="DPMI.CPP">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -1157,6 +1163,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CncDotNet\CncDotNet.csproj">
       <Project>{7dc695ab-8400-42df-8af6-1fd91673d60c}</Project>
+      <Private>true</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

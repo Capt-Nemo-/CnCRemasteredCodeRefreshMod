@@ -39,6 +39,7 @@
 #include	<conio.h>
 #include	<io.h>
 #include  "ccdde.h"
+// #include "DotNetLoader.h"
 
 bool Read_Private_Config_Struct(char* profile, NewConfigType* config);
 void Delete_Swap_Files(void);
@@ -162,6 +163,8 @@ int _argcBckup;
 
 int DLL_Startup(const char* command_line_in)
 {
+	// DotNetLoader::Init();
+	
 	// try
 	// {
 	RunningAsDLL = true;
