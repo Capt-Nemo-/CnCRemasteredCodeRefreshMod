@@ -227,7 +227,6 @@
     <ClInclude Include="DLLInterface.h" />
     <ClInclude Include="DOOR.H" />
     <ClInclude Include="DotNetApiVc.h" />
-    <ClInclude Include="DotNetLoader.h" />
     <ClInclude Include="DPMI.H" />
     <ClInclude Include="DRIVE.H" />
     <ClInclude Include="EDIT.H" />
@@ -260,6 +259,7 @@
     <ClInclude Include="IPXGCONN.H" />
     <ClInclude Include="IPXMGR.H" />
     <ClInclude Include="JSHELL.H" />
+    <ClInclude Include="KeyListener.h" />
     <ClInclude Include="LAYER.H" />
     <ClInclude Include="LED.H" />
     <ClInclude Include="LINK.H" />
@@ -547,7 +547,6 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="DotNetApiVc.cpp" />
-    <ClCompile Include="DotNetLoader.cpp" />
     <ClCompile Include="DPMI.CPP">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -712,6 +711,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="KeyListener.cpp" />
     <ClCompile Include="LAYER.CPP">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -1161,13 +1161,8 @@
     <ResourceCompile Include="Resource\TiberianDawn.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CncDotNet\CncDotNet.csproj">
-      <Project>{7dc695ab-8400-42df-8af6-1fd91673d60c}</Project>
-      <Private>true</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
