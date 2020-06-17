@@ -98,7 +98,6 @@ namespace DebugApp
             string savePath = Path.GetDirectoryName(Application.ExecutablePath) + @"\\gdi_save.sav";
 
             CNC_Init(@"-CD""C:\Steam\steamapps\common\CnCRemastered\DATA\CNCDATA\TIBERIAN_DAWN\CD1""", IntPtr.Zero);
-            CNC_Init(@"-CD""C:\Steam\steamapps\common\CnCRemastered\DATA\CNCDATA\TIBERIAN_DAWN\CD1""", IntPtr.Zero);
 
             if (!CNC_Save_Load(false, savePath, "GAME_NORMAL"))
                 throw new Exception("Load game failed.");

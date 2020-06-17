@@ -15,12 +15,12 @@ using namespace Collections::Concurrent;
 void DotNetVc::MainInit(const int argc, char* argv[])
 {
 	Shutdown();
-
+	
 	auto strs = gcnew array<String^>(argc);
-
+	
 	for (int i = 0; i < argc; ++i)
 		strs[i] = gcnew String(argv[i]);
-
+	
 	ClrApi::Cs = gcnew ClrApi(strs, gcnew QuickSaveScript());
 }
 
