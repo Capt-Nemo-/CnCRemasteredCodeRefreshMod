@@ -218,6 +218,7 @@
     <ClInclude Include="CONTROL.H" />
     <ClInclude Include="CREDITS.H" />
     <ClInclude Include="CREW.H" />
+    <ClInclude Include="ClrApi.h" />
     <ClInclude Include="DDE.H" />
     <ClInclude Include="DEBUG.H" />
     <ClInclude Include="DEFINES.H" />
@@ -226,7 +227,7 @@
     <ClInclude Include="DISPLAY.H" />
     <ClInclude Include="DLLInterface.h" />
     <ClInclude Include="DOOR.H" />
-    <ClInclude Include="DotNetApiVc.h" />
+    <ClInclude Include="DotNetVc.h" />
     <ClInclude Include="DPMI.H" />
     <ClInclude Include="DRIVE.H" />
     <ClInclude Include="EDIT.H" />
@@ -286,6 +287,7 @@
     <ClInclude Include="PHONE.H" />
     <ClInclude Include="POWER.H" />
     <ClInclude Include="QUEUE.H" />
+    <ClInclude Include="QuickSaveScript.h" />
     <ClInclude Include="RADAR.H" />
     <ClInclude Include="RADIO.H" />
     <ClInclude Include="RAWFILE.H" />
@@ -510,6 +512,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="ClrApi.cpp" />
     <ClCompile Include="DDE.CPP">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -546,7 +549,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="DotNetApiVc.cpp" />
+    <ClCompile Include="DotNetVc.cpp" />
     <ClCompile Include="DPMI.CPP">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>

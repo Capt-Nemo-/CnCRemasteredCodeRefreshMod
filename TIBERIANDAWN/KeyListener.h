@@ -6,11 +6,11 @@ using namespace Runtime::InteropServices;
 
 delegate IntPtr KeyboardProcedure(int nCode, IntPtr wParam, IntPtr lParam);
 
-ref class KeyListener
+private ref class KeyListener sealed
 {
 private:
 
-	static const int
+	literal int
 		WhKeyboardLowLevel = 13,
 		WmKeydown = 0x100,
 		WmKeyup = 0x0101,
@@ -18,21 +18,13 @@ private:
 		WmSyskeyup = 0x0105;
 
 	[DllImport("user32.dll")]
-	static IntPtr SetWindowsHookEx(
-		int idHook,
-		KeyboardProcedure^ lpfn,
-		IntPtr hMod,
-		UInt32 dwThreadId);
+	static IntPtr SetWindowsHookEx(int idHook, KeyboardProcedure^ lpfn, IntPtr hMod, UInt32 dwThreadId);
 
 	[DllImport("user32.dll")]
 	static bool UnhookWindowsHookEx(IntPtr hhk);
 
 	[DllImport("user32.dll")]
-	static IntPtr CallNextHookEx(
-		IntPtr hhk,
-		int nCode,
-		IntPtr wParam,
-		IntPtr lParam);
+	static IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
 	[DllImport("kernel32.dll")]
 	static IntPtr GetModuleHandle(String^ lpModuleName);
@@ -92,7 +84,10 @@ private:
 			case WmKeyup:
 				{
 					auto key = static_cast<Keys>(Marshal::ReadInt32(lParam));
-					auto prevKey = _prevKey, modifier = _modifier, keyOriginal = key;
+					
+					const auto prevKey = _prevKey;
+					const auto modifier = _modifier;
+					const auto keyOriginal = key;
 
 					if (modifier != Keys::None)
 					{

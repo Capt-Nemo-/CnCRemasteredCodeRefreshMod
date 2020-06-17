@@ -2,7 +2,7 @@
 // #include "INFANTRY.H"
 // #include "LOGIC.H"
 
-class DotNetApiVc
+class DotNetVc
 {
 public:
 	static void MainInit(int argc, char *argv[]);

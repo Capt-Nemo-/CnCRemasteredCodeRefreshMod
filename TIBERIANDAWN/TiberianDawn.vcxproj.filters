@@ -630,10 +630,16 @@
     <ClInclude Include="RULES.H">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DotNetApiVc.h">
+    <ClInclude Include="KeyListener.h">
       <Filter>DotNetApi</Filter>
     </ClInclude>
-    <ClInclude Include="KeyListener.h">
+    <ClInclude Include="QuickSaveScript.h">
+      <Filter>DotNetApi</Filter>
+    </ClInclude>
+    <ClInclude Include="DotNetVc.h">
+      <Filter>DotNetApi</Filter>
+    </ClInclude>
+    <ClInclude Include="ClrApi.h">
       <Filter>DotNetApi</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1215,7 +1221,10 @@
     <ClCompile Include="RULES.CPP">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DotNetApiVc.cpp">
+    <ClCompile Include="DotNetVc.cpp">
+      <Filter>DotNetApi</Filter>
+    </ClCompile>
+    <ClCompile Include="ClrApi.cpp">
       <Filter>DotNetApi</Filter>
     </ClCompile>
   </ItemGroup>
