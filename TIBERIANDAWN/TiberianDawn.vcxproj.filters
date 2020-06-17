@@ -1218,9 +1218,6 @@
     <ClCompile Include="DotNetApiVc.cpp">
       <Filter>DotNetApi</Filter>
     </ClCompile>
-    <ClCompile Include="KeyListener.cpp">
-      <Filter>DotNetApi</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="win32lib\FACINGFF.ASM">

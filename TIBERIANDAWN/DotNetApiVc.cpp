@@ -46,6 +46,38 @@ private:
 
 	property ConcurrentQueue<::Keys>^ KeyQueue;
 
+	void OnLowLevelKeyPress(Object^ sender, KeyEventArgs^ args)
+	{
+		KeyQueue->Enqueue(args->KeyData);
+	}
+
+	void HookKeyboard()
+	{
+		if (IsShutdown)
+			return;
+
+		UnhookKeyboard();
+
+		Keys = gcnew KeyListener();
+		Keys->LowLevelKeyPress = gcnew KeyEventHandler(this, &CsApi::OnLowLevelKeyPress);
+
+		Keys->Start();
+
+		KeyboardHookActive = true;
+	}
+
+	void UnhookKeyboard()
+	{
+		if (Keys != nullptr)
+			Keys->Destroy();
+
+		Keys = nullptr;
+
+		ClearKeyQueue();
+
+		KeyboardHookActive = false;
+	}
+
 	void KeyboardHookWatcher()
 	{
 		while (!IsShutdown)
@@ -73,12 +105,7 @@ private:
 	}
 
 internal:
-	property array<String^>^ ModuleCommandLine
-	{
-		array<String^>^ get();
-	private:
-		void set(array<String^>^);
-	}
+	property array<String^>^ ModuleCommandLine;
 
 public:
 	CsApi(array<String^>^ cmdLine, ... array<MissionScriptBase^>^ scripts)
@@ -109,37 +136,6 @@ public:
 			HookKeyboard();
 	}
 
-	void OnLowLevelKeyPress(Object^ sender, KeyEventArgs^ args)
-	{
-		KeyQueue->Enqueue(args->KeyData);		
-	}
-
-	void HookKeyboard()
-	{
-		if (IsShutdown)
-			return;
-
-		UnhookKeyboard();
-
-		Keys = gcnew KeyListener();
-		Keys->LowLevelKeyPress += gcnew KeyEventHandler(this, &OnLowLevelKeyPress);
-
-		Keys->Start();
-
-		KeyboardHookActive = true;
-	}
-
-	void UnhookKeyboard()
-	{
-		if (Keys != nullptr)
-			Keys->Destroy();
-
-		Keys = nullptr;
-
-		ClearKeyQueue();
-
-		KeyboardHookActive = false;
-	}
 
 	void ProcessKeystrokes()
 	{
@@ -164,7 +160,7 @@ public:
 		UnhookKeyboard();
 
 		for each (MissionScriptBase^ script in MissionScripts)
-				script->OnStopped();
+			script->OnStopped();
 	}
 
 	void ClearKeyQueue()
@@ -285,7 +281,7 @@ public:
 			{
 				CsApi::Cs->ShowQuickMessage("Error: save file not found...", 2000);
 			}
-			catch (Exception^ ex)
+			catch (Exception^)
 			{
 				CsApi::Cs->ShowQuickMessage("Error: quick load failed...", 2000);
 			}
