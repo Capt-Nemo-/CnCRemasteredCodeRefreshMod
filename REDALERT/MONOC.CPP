@@ -1088,7 +1088,7 @@ int Mono_Y(void)
 			mono = new MonoClass();
 			mono->View();
 		}
-		return(short)mono->Get_X();
+		return(short)mono->Get_Y();
 	}
 	return(0);
 }

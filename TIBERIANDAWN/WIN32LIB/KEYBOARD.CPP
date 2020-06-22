@@ -93,7 +93,7 @@ WWKeyboardClass::WWKeyboardClass(void)
 	//
 	// Our buffer should start devoid of keys.
 	//
-	memset(Buffer, 0, 256);
+	memset(Buffer, 0, sizeof(Buffer));
 	Head				= 0;
 	Tail				= 0;
 

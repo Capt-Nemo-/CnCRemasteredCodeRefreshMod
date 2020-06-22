@@ -1401,7 +1401,7 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Read_INI(int scenario_index, i
 		return false;
 	}
 
-	memset(ini_buffer, _ini_buffer_size, 0);
+	memset(ini_buffer, 0, _ini_buffer_size);
 
 	CCFileClass file(Scen.ScenarioName);
 	if (!file.Is_Available()) {
@@ -2975,14 +2975,14 @@ void DLLExportClass::On_Center_Camera(const HouseClass* player_ptr, int coord_x,
 **************************************************************************************************/
 void DLLExportClass::On_Debug_Output(const char *debug_text)
 {
-	if (EventCallback == NULL) {
-		return;
-	}
-
-	EventCallbackStruct new_event;
-	new_event.EventType = CALLBACK_EVENT_DEBUG_PRINT;
-	new_event.DebugPrint.PrintString = debug_text;
-	EventCallback(new_event);
+	// if (EventCallback == NULL) {
+	// 	return;
+	// }
+	//
+	// EventCallbackStruct new_event;
+	// new_event.EventType = CALLBACK_EVENT_DEBUG_PRINT;
+	// new_event.DebugPrint.PrintString = debug_text;
+	// EventCallback(new_event);
 }
 
 
