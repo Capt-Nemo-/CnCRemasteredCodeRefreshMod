@@ -105,6 +105,7 @@ typedef enum
 */
 #define RANDOM_START_POSITION 0x7f
 
+#define KILL_PLAYER_ON_DISCONNECT 1
 
 /*
 **  DLL Interface
@@ -1861,57 +1862,42 @@ extern "C" __declspec(dllexport) bool __cdecl CNC_Advance_Instance(uint64 player
 *
 * History: 1/7/2019 5:20PM - ST
 **************************************************************************************************/
-extern "C" __declspec(dllexport) bool __cdecl CNC_Save_Load(bool save, const char* file_path_and_name,
-                                                            const char* game_type)
+extern "C" __declspec(dllexport) bool __cdecl CNC_Save_Load(bool save, const char *file_path_and_name, const char *game_type)
 {
-    // DotNetApiVc::DebugBox("CNC_Save_Load:");
-    // DotNetApiVc::DebugBox(file_path_and_name);
-    // DotNetApiVc::DebugBox(game_type);
+	bool result = false;
 
-    bool result = false;
+	if (save) {
+		result = Save_Game(file_path_and_name, "internal");
+	} else {
+		
+		if (game_type == NULL) {
+			return false;
+		}
+	
+		if (stricmp(game_type, "GAME_NORMAL") == 0) {
+			GameToPlay = GAME_NORMAL;
+		} else {
+			if (stricmp(game_type, "GAME_GLYPHX_MULTIPLAYER") == 0) {
+				GameToPlay = GAME_GLYPHX_MULTIPLAYER;
+				ScenPlayer = SCEN_PLAYER_MPLAYER;
+			} else {
+				return false;
+			}
+		}
+		
+		result = Load_Game(file_path_and_name);
 
-    if (save)
-    {
-        result = Save_Game(file_path_and_name, "internal");
-    }
-    else
-    {
-        if (game_type == NULL)
-        {
-            return false;
-        }
+		DLLExportClass::Set_Player_Context(DLLExportClass::GlyphxPlayerIDs[0], true);
+		Set_Logic_Page(SeenBuff);
+		VisiblePage.Clear();
+		Map.Flag_To_Redraw(true);
+		if (DLLExportClass::Legacy_Render_Enabled()) {
+			Map.Render();
+		}
+		Set_Palette(GamePalette);
+	}
 
-        if (stricmp(game_type, "GAME_NORMAL") == 0)
-        {
-            GameToPlay = GAME_NORMAL;
-        }
-        else
-        {
-            if (stricmp(game_type, "GAME_GLYPHX_MULTIPLAYER") == 0)
-            {
-                GameToPlay = GAME_GLYPHX_MULTIPLAYER;
-                ScenPlayer = SCEN_PLAYER_MPLAYER;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        result = Load_Game(file_path_and_name);
-
-        DLLExportClass::Set_Player_Context(DLLExportClass::GlyphxPlayerIDs[0], true);
-        Set_Logic_Page(SeenBuff);
-        VisiblePage.Clear();
-        Map.Flag_To_Redraw(true);
-        if (DLLExportClass::Legacy_Render_Enabled())
-        {
-            Map.Render();
-        }
-        Set_Palette(GamePalette);
-    }
-
-    return result;
+	return result;
 }
 
 
@@ -1951,77 +1937,83 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Set_Difficulty(int difficulty)
 **************************************************************************************************/
 extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Player_Switch_To_AI(uint64 player_id)
 {
-    // DotNetApiVc::DebugBox("CNC_Handle_Player_Switch_To_AI");
+	if (PlayerWins || PlayerLoses || DLLExportClass::Get_Game_Over()) {
+		return;
+	}
+	
+	GlyphX_Debug_Print("CNC_Handle_Player_Switch_To_AI");
 
-    if (PlayerWins || PlayerLoses || DLLExportClass::Get_Game_Over())
-    {
-        return;
-    }
+	if (GameToPlay == GAME_NORMAL) {
+		return;
+	}
+	
+#ifdef KILL_PLAYER_ON_DISCONNECT
 
-    HousesType house;
-    HouseClass* ptr;
+	/*
+	** Kill player's units on disconnect.
+	*/
+	if (player_id != 0) {
+		DLLExportClass::Set_Player_Context(player_id);
 
-    GlyphX_Debug_Print("CNC_Handle_Player_Switch_To_AI");
+		if (PlayerPtr) {
+			PlayerPtr->Flag_To_Die();
+		}
+	}
 
-    if (GameToPlay == GAME_NORMAL)
-    {
-        return;
-    }
+#else //KILL_PLAYER_ON_DISCONNECT
 
-    if (player_id != 0)
-    {
-        DLLExportClass::Set_Player_Context(player_id);
+	if (player_id != 0) {
+		
+		HousesType house;
+		HouseClass *ptr;
+		
+		DLLExportClass::Set_Player_Context(player_id);
 
-        if (PlayerPtr)
-        {
-            PlayerPtr->WasHuman = true;
-            PlayerPtr->IsHuman = false;
-            PlayerPtr->IsStarted = true;
-            PlayerPtr->IQ = Rule.MaxIQ;
-            PlayerPtr->IsBaseBuilding = true;
+		if (PlayerPtr) {
+			PlayerPtr->WasHuman = true;
+			PlayerPtr->IsHuman = false;
+			PlayerPtr->IsStarted = true;
+			PlayerPtr->IQ = Rule.MaxIQ;
+			PlayerPtr->IsBaseBuilding = true;
 
-            /*
-            ** Start the unload mission for MCVs
-            */
-            for (int index = 0; index < Units.Count(); index++)
-            {
-                UnitClass* obj = Units.Ptr(index);
+			/*
+			** Start the unload mission for MCVs
+			*/
+			for (int index = 0; index < Units.Count(); index++) {
+				UnitClass * obj = Units.Ptr(index);
 
-                if (obj && !obj->IsInLimbo && obj->House == PlayerPtr)
-                {
-                    if (*obj == UNIT_MCV)
-                    {
-                        obj->Assign_Mission(MISSION_GUARD);
-                        obj->Assign_Target(TARGET_NONE);
-                        obj->Assign_Destination(TARGET_NONE);
-                        obj->Assign_Mission(MISSION_UNLOAD);
-                        obj->Commence();
-                    }
-                }
-            }
+				if (obj && !obj->IsInLimbo && obj->House == PlayerPtr) {
+					if (*obj == UNIT_MCV) {
+						obj->Assign_Mission(MISSION_GUARD);
+						obj->Assign_Target(TARGET_NONE);
+						obj->Assign_Destination(TARGET_NONE);
+						obj->Assign_Mission(MISSION_UNLOAD);
+						obj->Commence();
+					}
+				}
+			}
 
-            DLLExportClass::On_Message(PlayerPtr, "", 60.0f, MESSAGE_TYPE_PLAYER_DISCONNECTED, -1);
+			DLLExportClass::On_Message(PlayerPtr, "", 60.0f, MESSAGE_TYPE_PLAYER_DISCONNECTED, -1);
 
-            /*
-            ** Send the disconnect taunt message
-            */
-            int human_count = 0;
-            for (house = HOUSE_MULTI1; house < (HOUSE_MULTI1 + MPlayerMax); house++)
-            {
-                ptr = HouseClass::As_Pointer(house);
+			/*
+			** Send the disconnect taunt message
+			*/
+			int human_count = 0;
+			for (house = HOUSE_MULTI1; house < (HOUSE_MULTI1 + MPlayerMax); house++) {
+				ptr = HouseClass::As_Pointer(house);
 
-                if (ptr && ptr->IsHuman && !ptr->IsDefeated)
-                {
-                    human_count++;
-                }
-            }
+				if (ptr && ptr->IsHuman && !ptr->IsDefeated) {
+					human_count++;
+				}
+			}
 
-            if (human_count == 1)
-            {
-                DLLExportClass::Computer_Message(true);
-            }
-        }
-    }
+			if (human_count == 1) {
+				DLLExportClass::Computer_Message(true);
+			}
+		}
+	}
+
+#endif //KILL_PLAYER_ON_DISCONNECT
 }
 
 
@@ -2660,104 +2652,108 @@ void DLLExportClass::On_Game_Over(uint64 glyphx_Player_id, bool player_wins)
 **************************************************************************************************/
 void DLLExportClass::On_Multiplayer_Game_Over(void)
 {
-    if (EventCallback == NULL)
-    {
-        return;
-    }
+	if (EventCallback == NULL) {
+		return;
+	}
 
-    GameOver = true;
+	GameOver = true;
 
-    EventCallbackStruct event;
+	EventCallbackStruct event;
 
-    event.EventType = CALLBACK_EVENT_GAME_OVER;
+	event.EventType = CALLBACK_EVENT_GAME_OVER;
 
-    // Multiplayer players data for debrief stats
+	// Multiplayer players data for debrief stats
 
-    event.GameOver.Multiplayer = true;
-    event.GameOver.MultiPlayerTotalPlayers = MPlayerCount;
+	event.GameOver.Multiplayer = true;
+	event.GameOver.MultiPlayerTotalPlayers = MPlayerCount;
 
-    for (int player_index = 0; player_index < MPlayerCount; player_index ++)
-    {
-        HouseClass* player_ptr = HouseClass::As_Pointer(MPlayerHouses[player_index]);
-        //HouseClass::As_Pointer(HOUSE_MULTI2);
-        if (player_ptr != NULL)
-        {
-            int house = player_ptr->Class->House;
-            unsigned int leadership = TD_Calculate_Leadership(house, player_ptr->UnitsLost, player_ptr->BuildingsLost);
+	for ( int player_index = 0; player_index < MPlayerCount; player_index ++ ) 
+	{
+		HouseClass* player_ptr = HouseClass::As_Pointer( MPlayerHouses[player_index] );	//HouseClass::As_Pointer(HOUSE_MULTI2);
+		if ( player_ptr != NULL )
+		{
+			int house = player_ptr->Class->House;
+			unsigned int leadership = TD_Calculate_Leadership( house, player_ptr->UnitsLost, player_ptr->BuildingsLost );
 
-            unsigned int efficiency = TD_Calculate_Efficiency(player_ptr->HarvestedCredits, player_ptr->InitialCredits,
-                                                              player_ptr->Available_Money());
+			unsigned int efficiency = TD_Calculate_Efficiency( player_ptr->HarvestedCredits, player_ptr->InitialCredits, player_ptr->Available_Money() );
 
-            unsigned int total_score = TD_Calculate_Score(leadership, efficiency, BuildLevel);
+		  	unsigned int total_score = TD_Calculate_Score( leadership, efficiency, BuildLevel );
 
-            int units_killed = 0;
-            int structures_killed = 0;
-            for (unsigned int house_index = 0; house_index < HOUSE_COUNT; house_index ++)
-            {
-                units_killed += player_ptr->UnitsKilled[house_index];
-                structures_killed += player_ptr->BuildingsKilled[house_index];
-            }
+			int units_killed = 0;
+			int structures_killed = 0;
+			for ( unsigned int house_index = 0; house_index < HOUSE_COUNT; house_index ++ ) 
+			{
+				units_killed += player_ptr->UnitsKilled[ house_index ];
+				structures_killed += player_ptr->BuildingsKilled[ house_index ];
+			}
 
-            // Populate and copy the multiplayer player data structure 
+			// Populate and copy the multiplayer player data structure 
 
-            GameOverMultiPlayerStatsStruct multi_player_data;
+			GameOverMultiPlayerStatsStruct multi_player_data;
 
-            multi_player_data.GlyphXPlayerID = Get_GlyphX_Player_ID(player_ptr);
-            multi_player_data.IsHuman = (player_ptr->IsHuman || player_ptr->WasHuman);
-            multi_player_data.WasHuman = player_ptr->WasHuman;
-            multi_player_data.IsWinner = !player_ptr->IsDefeated;
-            multi_player_data.Efficiency = efficiency;
-            multi_player_data.Score = total_score;
-            multi_player_data.ResourcesGathered = player_ptr->HarvestedCredits;
-            multi_player_data.TotalUnitsKilled = units_killed;
-            multi_player_data.TotalStructuresKilled = structures_killed;
+			multi_player_data.GlyphXPlayerID = Get_GlyphX_Player_ID( player_ptr );
+			multi_player_data.IsHuman = (player_ptr->IsHuman || player_ptr->WasHuman);
+			multi_player_data.WasHuman = player_ptr->WasHuman;
+			multi_player_data.IsWinner = !player_ptr->IsDefeated;
+			multi_player_data.Efficiency = efficiency;
+			multi_player_data.Score = total_score;
+			multi_player_data.ResourcesGathered = player_ptr->HarvestedCredits;
+			multi_player_data.TotalUnitsKilled = units_killed;
+			multi_player_data.TotalStructuresKilled = structures_killed;
 
-            if (player_index < GAME_OVER_MULTIPLAYER_MAX_PLAYERS_TRACKED)
-            {
-                event.GameOver.MultiPlayerPlayersData[player_index] = multi_player_data;
-            }
-        }
-    }
-    for (int player_index = MPlayerCount; player_index < GAME_OVER_MULTIPLAYER_MAX_PLAYERS_TRACKED; player_index ++)
-    {
-        memset(&event.GameOver.MultiPlayerPlayersData[player_index], 0, sizeof(GameOverMultiPlayerStatsStruct));
-    }
+			if ( player_index < GAME_OVER_MULTIPLAYER_MAX_PLAYERS_TRACKED ) 
+			{
+				event.GameOver.MultiPlayerPlayersData[ player_index ] = multi_player_data;
+			}
+		}
+	}
+	for ( int player_index = MPlayerCount; player_index < GAME_OVER_MULTIPLAYER_MAX_PLAYERS_TRACKED; player_index ++ ) 
+	{
+		memset( &event.GameOver.MultiPlayerPlayersData[ player_index ], 0, sizeof( GameOverMultiPlayerStatsStruct ) );
+	}
 
-    // Single-player N/A stuff
+	// Single-player N/A stuff
 
-    event.GameOver.MovieName = "";
-    event.GameOver.MovieName2 = "";
-    event.GameOver.MovieName3 = "";
-    event.GameOver.MovieName4 = "";
-    event.GameOver.AfterScoreMovieName = "";
-    event.GameOver.Leadership = 0;
-    event.GameOver.Efficiency = 0;
-    event.GameOver.Score = 0;
-    event.GameOver.NODKilled = 0;
-    event.GameOver.GDIKilled = 0;
-    event.GameOver.CiviliansKilled = 0;
-    event.GameOver.NODBuildingsDestroyed = 0;
-    event.GameOver.GDIBuildingsDestroyed = 0;
-    event.GameOver.CiviliansBuildingsDestroyed = 0;
-    event.GameOver.RemainingCredits = 0;
-    event.GameOver.SabotagedStructureType = 0;
-    event.GameOver.TimerRemaining = -1;
+	event.GameOver.MovieName = "";
+	event.GameOver.MovieName2 = "";
+	event.GameOver.MovieName3 = "";
+	event.GameOver.MovieName4 = "";
+	event.GameOver.AfterScoreMovieName = "";
+	event.GameOver.Leadership = 0;
+	event.GameOver.Efficiency = 0;
+	event.GameOver.Score = 0;
+	event.GameOver.NODKilled = 0;
+	event.GameOver.GDIKilled = 0;
+	event.GameOver.CiviliansKilled = 0;
+	event.GameOver.NODBuildingsDestroyed = 0;
+	event.GameOver.GDIBuildingsDestroyed = 0;
+	event.GameOver.CiviliansBuildingsDestroyed = 0;
+	event.GameOver.RemainingCredits = 0;
+	event.GameOver.SabotagedStructureType = 0;
+	event.GameOver.TimerRemaining = -1;
 
-    // Trigger an event for each human player
-    for (int i = 0; i < MPlayerCount; i++)
-    {
-        HouseClass* player_ptr = HouseClass::As_Pointer(MPlayerHouses[i]); //HouseClass::As_Pointer(HOUSE_MULTI2);
-        if (player_ptr != NULL)
-        {
-            if (player_ptr->IsHuman == true)
-            {
-                event.GlyphXPlayerID = Get_GlyphX_Player_ID(player_ptr);
-                event.GameOver.PlayerWins = !player_ptr->IsDefeated;
-                event.GameOver.RemainingCredits = player_ptr->Available_Money();
-                EventCallback(event);
-            }
-        }
-    }
+	// Trigger an event for each human player, winner first (even if it's an AI)
+	for (int i = 0; i < MPlayerCount; i++) {
+		HouseClass* player_ptr = HouseClass::As_Pointer(MPlayerHouses[i]);	//HouseClass::As_Pointer(HOUSE_MULTI2);
+		if (player_ptr != NULL && !player_ptr->IsDefeated) {
+			event.GlyphXPlayerID = Get_GlyphX_Player_ID(player_ptr);
+			event.GameOver.IsHuman = player_ptr->IsHuman;
+			event.GameOver.PlayerWins = true;
+			event.GameOver.RemainingCredits = player_ptr->Available_Money();
+			EventCallback(event);
+		}
+	}
+
+	for (int i = 0; i < MPlayerCount; i++) {
+		HouseClass* player_ptr = HouseClass::As_Pointer(MPlayerHouses[i]);	//HouseClass::As_Pointer(HOUSE_MULTI2);
+		if (player_ptr != NULL && player_ptr->IsHuman && player_ptr->IsDefeated) {
+			event.GlyphXPlayerID = Get_GlyphX_Player_ID(player_ptr);
+			event.GameOver.IsHuman = true;
+			event.GameOver.PlayerWins = false;
+			event.GameOver.RemainingCredits = player_ptr->Available_Money();
+			EventCallback(event);
+		}
+	}
 }
 
 
@@ -4123,46 +4119,46 @@ extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Unit_Request(UnitReques
 *
 * History: 1/7/2019 5:20PM - ST
 **************************************************************************************************/
-extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Sidebar_Request(
-    SidebarRequestEnum request_type, uint64 player_id, int buildable_type, int buildable_id, short cell_x, short cell_y)
+extern "C" __declspec(dllexport) void __cdecl CNC_Handle_Sidebar_Request(SidebarRequestEnum request_type, uint64 player_id, int buildable_type, int buildable_id, short cell_x, short cell_y)
 {
-    // DotNetApiVc::DebugBox("CNC_Handle_Sidebar_Request");
+	if (!DLLExportClass::Set_Player_Context(player_id)) {
+		return;
+	}
+	
+	switch (request_type) {
+		
+		// MBL 06.02.2020 - Changing right-click support for first put building on hold, and then subsequenct right-clicks to decrement that queue count for 1x or 5x; Then, 1x or 5x Left click will resume from hold
+		// Handle and fall through to start construction (from hold state) below
+		case SIDEBAR_REQUEST_START_CONSTRUCTION_MULTI:
 
-    if (!DLLExportClass::Set_Player_Context(player_id))
-    {
-        return;
-    }
+		case SIDEBAR_REQUEST_START_CONSTRUCTION:
+			DLLExportClass::Start_Construction(player_id, buildable_type, buildable_id);
+			break;
+				
+		case SIDEBAR_REQUEST_HOLD_CONSTRUCTION:
+			DLLExportClass::Hold_Construction(player_id, buildable_type, buildable_id);
+			break;
+			
+		case SIDEBAR_REQUEST_CANCEL_CONSTRUCTION:
+			DLLExportClass::Cancel_Construction(player_id, buildable_type, buildable_id);
+			break;
 
-    switch (request_type)
-    {
-    case SIDEBAR_REQUEST_START_CONSTRUCTION:
-        DLLExportClass::Start_Construction(player_id, buildable_type, buildable_id);
-        break;
+		case SIDEBAR_REQUEST_START_PLACEMENT:
+			DLLExportClass::Start_Placement(player_id, buildable_type, buildable_id);
+			break;
+			
+		case SIDEBAR_REQUEST_PLACE:
+			DLLExportClass::Place(player_id, buildable_type, buildable_id, cell_x, cell_y);
+			break;
 
-    case SIDEBAR_REQUEST_HOLD_CONSTRUCTION:
-        DLLExportClass::Hold_Construction(player_id, buildable_type, buildable_id);
-        break;
+		case SIDEBAR_CANCEL_PLACE:
+			DLLExportClass::Cancel_Placement(player_id, buildable_type, buildable_id);
+			break;
 
-    case SIDEBAR_REQUEST_CANCEL_CONSTRUCTION:
-        DLLExportClass::Cancel_Construction(player_id, buildable_type, buildable_id);
-        break;
-
-    case SIDEBAR_REQUEST_START_PLACEMENT:
-        DLLExportClass::Start_Placement(player_id, buildable_type, buildable_id);
-        break;
-
-    case SIDEBAR_REQUEST_PLACE:
-        DLLExportClass::Place(player_id, buildable_type, buildable_id, cell_x, cell_y);
-        break;
-
-    case SIDEBAR_CANCEL_PLACE:
-        DLLExportClass::Cancel_Placement(player_id, buildable_type, buildable_id);
-        break;
-
-    default:
-        break;
-    }
-}
+		default:
+			break;
+	}
+}			  
 
 /**************************************************************************************************
 * CNC_Handle_SuperWeapon_Request
@@ -7200,25 +7196,25 @@ void DLLExportClass::Select_Previous_Unit(uint64 player_id)
 void DLLExportClass::Selected_Guard_Mode(uint64 player_id)
 {
     /*
-    ** Get the player for this...
-    */
-    if (!DLLExportClass::Set_Player_Context(player_id))
-    {
-        return;
-    }
+	** Get the player for this...
+	*/
+	if (!DLLExportClass::Set_Player_Context(player_id)) {
+		return;
+	}
 
-    if (CurrentObject.Count())
-    {
-        for (int index = 0; index < CurrentObject.Count(); index++)
-        {
-            ObjectClass const* tech = CurrentObject[index];
+	if (CurrentObject.Count()) {
+		for (int index = 0; index < CurrentObject.Count(); index++) {
+			ObjectClass const * tech = CurrentObject[index];
 
-            if (tech && tech->Can_Player_Move() && tech->Can_Player_Fire())
-            {
-                OutList.Add(EventClass(tech->As_Target(), MISSION_GUARD_AREA));
-            }
-        }
-    }
+			if (tech && tech->Can_Player_Fire()) {
+				if (tech->Can_Player_Move()) {
+					OutList.Add(EventClass(tech->As_Target(), MISSION_GUARD_AREA));
+				} else {
+					OutList.Add(EventClass(tech->As_Target(), MISSION_GUARD));
+				}
+			}
+		}
+	}
 }
 
 /**************************************************************************************************
@@ -7772,68 +7768,57 @@ void DLLExportClass::Debug_Kill_Unit(int x, int y)
 
 void DLLExportClass::Debug_Heal_Unit(int x, int y)
 {
-    COORDINATE coord = Map.Pixel_To_Coord(x, y);
-    CELL cell = Coord_Cell(coord);
+	COORDINATE coord = Map.Pixel_To_Coord(x, y);
+	CELL cell = Coord_Cell(coord);
 
-    CellClass* cellptr = &Map[cell];
+	CellClass * cellptr = &Map[cell];
 
-    if (cellptr)
-    {
-        ObjectClass* obj = cellptr->Cell_Object();
-        if (obj)
-        {
-            obj->Strength = obj->Class_Of().MaxStrength;
-        }
-        else
-        {
-            if (cellptr->Overlay != OVERLAY_NONE)
-            {
-                OverlayTypeClass const* optr = &OverlayTypeClass::As_Reference(cellptr->Overlay);
-                if (optr->IsTiberium)
-                {
-                    const int cellcount = (int)FACING_COUNT + 1;
-                    CellClass* cells[cellcount];
-                    cells[0] = cellptr;
-                    for (FacingType index = FACING_N; index < FACING_COUNT; index++)
-                    {
-                        cells[(int)index + 1] = &cellptr->Adjacent_Cell(index);
-                    }
+	if (cellptr) {
+		ObjectClass *obj = cellptr->Cell_Object();
+		if (obj) {
+			obj->Strength = obj->Class_Of().MaxStrength;
+		}
+		else {
+			if (cellptr->Overlay != OVERLAY_NONE) {
+				OverlayTypeClass const * optr = &OverlayTypeClass::As_Reference(cellptr->Overlay);
+				if (optr->IsTiberium) {
+					const int cellcount = (int)FACING_COUNT + 1;
+					CellClass* cells[cellcount];
+					cells[0] = cellptr;
+					for (FacingType index = FACING_N; index < FACING_COUNT; index++) {
+						cells[(int)index + 1] = cellptr->Adjacent_Cell(index);
+					}
 
-                    for (int index = 0; index < cellcount; index++)
-                    {
-                        CellClass* newcell = cells[index];
+					for (int index = 0; index < cellcount; index++) {
+						CellClass *newcell = cells[index];
 
-                        if (newcell && newcell->Cell_Object() == NULL)
-                        {
-                            if (newcell->Land_Type() == LAND_CLEAR && newcell->Overlay == OVERLAY_NONE)
-                            {
-                                switch (newcell->TType)
-                                {
-                                case TEMPLATE_BRIDGE1:
-                                case TEMPLATE_BRIDGE2:
-                                case TEMPLATE_BRIDGE3:
-                                case TEMPLATE_BRIDGE4:
-                                    break;
+						if (newcell && newcell->Cell_Object() == NULL) {
+							if (newcell->Land_Type() == LAND_CLEAR && newcell->Overlay == OVERLAY_NONE) {
+								switch (newcell->TType) {
+									case TEMPLATE_BRIDGE1:
+									case TEMPLATE_BRIDGE2:
+									case TEMPLATE_BRIDGE3:
+									case TEMPLATE_BRIDGE4:
+										break;
 
-                                default:
-                                    new OverlayClass(
-                                        Random_Pick(OVERLAY_TIBERIUM1, OVERLAY_TIBERIUM12), newcell->Cell_Number());
-                                    newcell->OverlayData = 1;
-                                    break;
-                                }
-                            }
-                            else if (newcell->Land_Type() == LAND_TIBERIUM)
-                            {
-                                newcell->OverlayData = MIN(newcell->OverlayData + 1, 11);
-                                newcell->Recalc_Attributes();
-                                newcell->Redraw_Objects();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+									default:
+										new OverlayClass(Random_Pick(OVERLAY_TIBERIUM1, OVERLAY_TIBERIUM12), newcell->Cell_Number());
+										newcell->OverlayData = 1;
+										break;
+
+								}
+							}
+							else if (newcell->Land_Type() == LAND_TIBERIUM) {
+								newcell->OverlayData = MIN(newcell->OverlayData + 1, 11);
+								newcell->Recalc_Attributes();
+								newcell->Redraw_Objects();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 
