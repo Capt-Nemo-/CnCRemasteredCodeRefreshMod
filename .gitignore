@@ -11,4 +11,5 @@
 /bin/
 CncDotNet/obj/
 CncDotNet/bin/
-DebugApp/obj
+DebugApp/obj/
+DebugApp/bin/

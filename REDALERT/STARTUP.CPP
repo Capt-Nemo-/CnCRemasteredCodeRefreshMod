@@ -426,14 +426,14 @@ int main(int argc, char * argv[])
 #ifdef WIN32
 
 		WindowsTimer = new WinTimerClass(60, FALSE);
-#if (0)//PG
-		int time_test = WindowsTimer->Get_System_Tick_Count();
-		Sleep (1000);
-		if (WindowsTimer->Get_System_Tick_Count() == time_test){
-			MessageBox(0, TEXT_ERROR_TIMER, TEXT_SHORT_TITLE, MB_OK|MB_ICONSTOP);
-			return(EXIT_FAILURE);
-		}
-#endif
+// #if (0)//PG
+// 		int time_test = WindowsTimer->Get_System_Tick_Count();
+// 		Sleep (1000);
+// 		if (WindowsTimer->Get_System_Tick_Count() == time_test){
+// 			MessageBox(0, TEXT_ERROR_TIMER, TEXT_SHORT_TITLE, MB_OK|MB_ICONSTOP);
+// 			return(EXIT_FAILURE);
+// 		}
+// #endif
 #else	//WIN32
 		Init_Timer_System(60, true);
 #endif	//WIN32

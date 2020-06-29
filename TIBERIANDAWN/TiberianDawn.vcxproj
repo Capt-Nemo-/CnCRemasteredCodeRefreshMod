@@ -53,6 +53,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>C:\Steam\steamapps\common\CnCRemastered\</OutDir>
     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
