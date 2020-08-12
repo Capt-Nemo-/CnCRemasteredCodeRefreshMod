@@ -228,7 +228,7 @@ extern GetCDClass				CDList;
 /*
 ** Modem globals
 */
-// extern bool 											ModemService;
+extern bool 											ModemService;
 //extern NullModemClass 								NullModem;
 //extern DynamicVectorClass<PhoneEntryClass *>	PhoneBook;
 extern int												CurPhoneIdx;

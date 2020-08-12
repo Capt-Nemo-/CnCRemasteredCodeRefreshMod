@@ -523,7 +523,7 @@ class SessionClass
 		//.....................................................................
 		// Modem-specific variables
 		//.....................................................................
-		// bool ModemService		: 1;				// 1 = service modem in Call_Back
+		bool ModemService		: 1;				// 1 = service modem in Call_Back
 		int CurPhoneIdx;							// phone listing index
 		SerialSettingsType SerialDefaults;	// default serial settings
 		ModemGameType ModemType;				// caller or answerer?

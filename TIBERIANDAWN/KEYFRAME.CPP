@@ -152,18 +152,13 @@ void Reallocate_Big_Shape_Buffer(void)
 
 void Check_Use_Compressed_Shapes (void)
 {
-	UseBigShapeBuffer = TRUE;
-	OriginalUseBigShapeBuffer = TRUE;
+	MEMORYSTATUS	mem_info;
 
-	//Nemo: haha, 16MB RAM check....thats so cute :D
-	
-	// MEMORYSTATUS	mem_info;
-	//
-	// mem_info.dwLength=sizeof(mem_info);
-	// GlobalMemoryStatus(&mem_info);
-	//
-	// UseBigShapeBuffer = (mem_info.dwTotalPhys > 16*1024*1024) ? TRUE : FALSE;
-	// OriginalUseBigShapeBuffer = UseBigShapeBuffer;
+	mem_info.dwLength=sizeof(mem_info);
+	GlobalMemoryStatus(&mem_info);
+
+	UseBigShapeBuffer = (mem_info.dwTotalPhys > 16*1024*1024) ? TRUE : FALSE;
+	OriginalUseBigShapeBuffer = UseBigShapeBuffer;
 
 	// UseBigShapeBuffer = false;
 }

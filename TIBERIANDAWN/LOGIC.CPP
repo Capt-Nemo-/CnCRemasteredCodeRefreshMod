@@ -163,7 +163,7 @@ void LogicClass::Debug_Dump(MonoClass *mono) const
  *   12/23/1994 JLB : Esures that no object gets skipped if it was deleted.                    *
  *=============================================================================================*/
 void LogicClass::AI(void)
-{	
+{
 	int index;
 
 	FramesPerSecond++;

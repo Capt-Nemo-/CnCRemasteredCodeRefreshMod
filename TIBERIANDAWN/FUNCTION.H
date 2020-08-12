@@ -127,6 +127,7 @@ typedef int bool;
 //#define WIN32 =1	//_LEAN_AND_MEAN
 #include <windows.h>
 
+
 /**********************************************************************
 **	If the following define is enabled, then the memory checking code
 **	will be disabled.
@@ -190,6 +191,7 @@ extern long LParam;
 */
 //#include <modem.h>
 //#include <fast.h>
+
 
 extern long Frame;
 inline CELL Coord_XCell(COORDINATE coord) {return (CELL)(*(((unsigned char*)&coord)+1));}

@@ -58,6 +58,7 @@ bool Debug_Trap_Check_Heap = false;	// true = check the Heap
 bool Debug_Instant_Build = false;
 bool Debug_Force_Crash = false;
 
+
 TFixedIHeapClass<UnitClass>		Units;
 TFixedIHeapClass<FactoryClass>	Factories;
 TFixedIHeapClass<TerrainClass>	Terrains;
@@ -469,38 +470,38 @@ int AllowAttract = 0;		// 1 = allow attract mode
 ** perform any allocations;
 ** the class itself is ?? bytes.
 */
-// #if (0)	//PG_TO_FIX
-// bool ModemService = true;					// When false disable servicing modem.
-// NullModemClass NullModem (
-//    16,											// number of send entries
-// 	64,											// number of receive entries
-// //	sizeof (EventClass) * MAX_EVENTS,	// maxlen of entry buffer
-// 	(200 / sizeof(EventClass) ) * sizeof(EventClass) + sizeof( CommHeaderType ),
-// 	0x1234);										// Magic number must have each digit unique
-// 													// and different from the queue magic number
-//
-//
-// DynamicVectorClass <PhoneEntryClass *> PhoneBook;
-// int CurPhoneIdx;								// current phonebook index, for dialing
-//
-// DynamicVectorClass <char *> InitStrings;
-//
-// SerialSettingsType SerialDefaults;		// serial port default settings
-//
-// //ModemGameType ModemGameToPlay;			// type of modem play Dialer, answerer, null
-//
-// char *DialMethodCheck[ DIAL_METHODS ] = {
-// 	"T",
-// 	"P"
-// };
-//
-// char *CallWaitStrings[ CALL_WAIT_STRINGS_NUM ] = {
-// 	"*70,",
-// 	"70#,",
-// 	"1170,",
-// 	"CUSTOM -                "
-// };
-// #endif
+#if (0)	//PG_TO_FIX
+bool ModemService = true;					// When false disable servicing modem.
+NullModemClass NullModem (
+   16,											// number of send entries
+	64,											// number of receive entries
+//	sizeof (EventClass) * MAX_EVENTS,	// maxlen of entry buffer
+	(200 / sizeof(EventClass) ) * sizeof(EventClass) + sizeof( CommHeaderType ),
+	0x1234);										// Magic number must have each digit unique
+													// and different from the queue magic number
+
+
+DynamicVectorClass <PhoneEntryClass *> PhoneBook;
+int CurPhoneIdx;								// current phonebook index, for dialing
+
+DynamicVectorClass <char *> InitStrings;
+
+SerialSettingsType SerialDefaults;		// serial port default settings
+
+//ModemGameType ModemGameToPlay;			// type of modem play Dialer, answerer, null
+
+char *DialMethodCheck[ DIAL_METHODS ] = {
+	"T",
+	"P"
+};
+
+char *CallWaitStrings[ CALL_WAIT_STRINGS_NUM ] = {
+	"*70,",
+	"70#,",
+	"1170,",
+	"CUSTOM -                "
+};
+#endif
 
 ModemGameType ModemGameToPlay;			// type of modem play Dialer, answerer, null
 
@@ -1040,7 +1041,7 @@ WWMouseClass		*WWMouse = NULL;
 HANDLE hInstance;
 int AllDone;
 BOOL				InMovie = FALSE;	//Are we currently playing a VQ movie?
-bool				MMXAvailable = true;	//Does this CPU support MMX extensions?
+bool				MMXAvailable = false;	//Does this CPU support MMX extensions?
 //GetCDClass		CDList;
 bool				GameStatisticsPacketSent;
 bool				ConnectionLost;
