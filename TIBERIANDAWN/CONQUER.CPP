@@ -134,9 +134,9 @@ extern int TotalLocks;
 extern bool Spawn_WChat(bool can_launch);
 extern bool SpawnedFromWChat;
 void Main_Game(int argc, char *argv[])
-{	
-    DotNetVc::MainInit(argc, argv);
-		
+{
+	DotNetVc::MainInit(argc, argv);
+	
 	bool fade = false;	// don't fade title screen the first time through
 
 	/*
@@ -145,7 +145,7 @@ void Main_Game(int argc, char *argv[])
 	if (!Init_Game(argc, argv)) {
 		return;
 	}
-		
+
 	CCDebugString ("C&C95 - Game initialisation complete.\n");
 	/*
 	**	Game processing loop:
@@ -442,11 +442,6 @@ void Keyboard_Process(KeyNumType &input)
 		return;
 	}
 
-	const KeyNumType plain = input & ~(WWKEY_SHIFT_BIT|WWKEY_ALT_BIT|WWKEY_CTRL_BIT);	
-	const auto vkKey = KN_To_VK(plain);
-
-	// DotNetApiVc::OnKeyInput(input, vkKey, true);
-		
 #ifndef DEMO
 	/*
 	**	For network & modem, process user input for inter-player messages.
@@ -457,6 +452,7 @@ void Keyboard_Process(KeyNumType &input)
 	** Use WWKEY values because KN values have WWKEY_VK_BIT or'd in with them
 	** and we need WWKEY_VK_BIT to still be set if it is.
 	*/
+	KeyNumType plain = input & ~(WWKEY_SHIFT_BIT|WWKEY_ALT_BIT|WWKEY_CTRL_BIT);
 
 #ifdef CHEAT_KEYS
 
@@ -517,8 +513,8 @@ void Keyboard_Process(KeyNumType &input)
 	if (input & WWKEY_SHIFT_BIT) action = 1;
 	if (input & WWKEY_ALT_BIT) action = 3;
 	if (input & WWKEY_CTRL_BIT) action = 2;
-		
-	switch (vkKey) {
+
+	switch (KN_To_VK(plain)) {
 
 		/*
 		**	Center the map around the currently selected objects. If no
@@ -616,7 +612,7 @@ void Keyboard_Process(KeyNumType &input)
 		case VK_F9:
 		case VK_F10:
 			if (!Debug_Map) {
-				Handle_View(vkKey - VK_F7, action);
+				Handle_View(KN_To_VK(plain) - VK_F7, action);
 			}
 			break;
 #if (0)
@@ -643,7 +639,7 @@ void Keyboard_Process(KeyNumType &input)
 		case VK_8:
 		case VK_9:
 		case VK_0:
-			Handle_Team(vkKey - VK_1, action);
+			Handle_Team(KN_To_VK(plain) - VK_1, action);
 			break;
 
 		/*
@@ -729,9 +725,6 @@ void Keyboard_Process(KeyNumType &input)
 		Debug_Key(input);
 	}
 #endif
-
-	// if (input != KN_NONE)
-	// 	DotNetApiVc::OnKeyInput(input, vkKey, false);
 }
 
 
@@ -1240,13 +1233,13 @@ void Call_Back(void)
 	/*
 	**	Modem and Null Modem maintenance
 	*/
-	// if (GameToPlay == GAME_NULL_MODEM
-	// || ((GameToPlay == GAME_MODEM) && ModemService)){
-	// //|| GameToPlay == GAME_INTERNET) {
-	// 	
-	// 	// PG_TO_FIX
-	// 	//NullModem.Service();
-	// }
+	if (GameToPlay == GAME_NULL_MODEM
+	|| ((GameToPlay == GAME_MODEM) && ModemService)){
+	//|| GameToPlay == GAME_INTERNET) {
+		
+		// PG_TO_FIX
+		//NullModem.Service();
+	}
 #endif
 }
 
@@ -1477,7 +1470,7 @@ void Reallocate_Big_Shape_Buffer(void);
 
 
 bool Main_Loop()
-{		
+{
 	KeyNumType	input;					// Player input.
 	int 			x;
 	int 			y;
@@ -1584,10 +1577,7 @@ bool Main_Loop()
 	/*
 	**	AI logic operations are performed here.
 	*/
-
-	// DotNetApiVc::AiStart(Logic);	
 	Logic.AI();
-	// DotNetApiVc::AiEnd(Logic);
 
 //	Heap_Dump_Check( "After Logic.AI" );
 
@@ -1706,7 +1696,6 @@ bool Main_Loop()
 
 	Sync_Delay();
 //	InMainLoop = false;
-
 	return(!GameActive);
 }
 
@@ -4022,15 +4011,15 @@ unsigned long Disk_Space_Available(void)
 
 	return 0x7fffffff;
 
-// #if (0)
-// 	struct diskfree_t diskdata;
-// 	unsigned drive;
-//
-// 	_dos_getdrive(&drive);
-// 	_dos_getdiskfree(drive, &diskdata);
-//
-// 	return(diskdata.avail_clusters * diskdata.sectors_per_cluster * diskdata.bytes_per_sector);
-// #endif
+#if (0)
+	struct diskfree_t diskdata;
+	unsigned drive;
+
+	_dos_getdrive(&drive);
+	_dos_getdiskfree(drive, &diskdata);
+
+	return(diskdata.avail_clusters * diskdata.sectors_per_cluster * diskdata.bytes_per_sector);
+#endif
 }
 
 
