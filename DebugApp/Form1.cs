@@ -95,7 +95,7 @@ namespace DebugApp
             if (CNC_Version(123) != 257)
                 throw new Exception("Unknown engine version.");
 
-            string savePath = Path.GetDirectoryName(Application.ExecutablePath) + @"\\gdi_save.sav";
+            string savePath = Path.GetDirectoryName(Application.ExecutablePath) + @"\\gdi_save_m1.sav";
 
             CNC_Init(@"-CD""C:\Steam\steamapps\common\CnCRemastered\DATA\CNCDATA\TIBERIAN_DAWN\CD1""", IntPtr.Zero);
 
