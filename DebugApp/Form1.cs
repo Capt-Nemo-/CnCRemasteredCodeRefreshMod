@@ -92,7 +92,7 @@ namespace DebugApp
 
         protected override async void OnLoad(EventArgs e)
         {
-            if (CNC_Version(123) != 257)
+            if (CNC_Version(123) != 258)
                 throw new Exception("Unknown engine version.");
 
             string savePath = Path.GetDirectoryName(Application.ExecutablePath) + @"\\gdi_save_m1.sav";
