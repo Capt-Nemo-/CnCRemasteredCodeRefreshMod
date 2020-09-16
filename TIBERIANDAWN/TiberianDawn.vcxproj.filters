@@ -641,6 +641,8 @@
     </ClInclude>
     <ClInclude Include="ClrApi.h">
       <Filter>DotNetApi</Filter>
+    <ClInclude Include="DLLInterfaceVersion.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
